@@ -10,6 +10,10 @@ public class CameraController : MonoBehaviour
 
     private new Camera camera;
 
+    private int chunkX;
+
+    private int chunkY;
+
     private void Awake()
     {
         camera = GetComponent<Camera>();

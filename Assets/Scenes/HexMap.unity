@@ -474,3 +474,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapGenerator: {fileID: 38871846}
   hex: {fileID: 6763887950867545750, guid: 7382446147acd234fb1655c4e53a5396, type: 3}
+  camera: {fileID: 519420031}
