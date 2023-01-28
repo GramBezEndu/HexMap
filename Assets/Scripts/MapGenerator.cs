@@ -21,6 +21,8 @@ public class MapGenerator : MonoBehaviour
 
     private readonly int yellowCount = 50000;
 
+    private readonly int chunksInRow = 100;
+
     private List<HexType> hexTypes = new List<HexType>();
 
     public List<Chunk> Chunks { get; private set; } = new List<Chunk>();
@@ -37,16 +39,13 @@ public class MapGenerator : MonoBehaviour
         System.Random rng = new System.Random();
         hexTypes = hexTypes.OrderBy(x => rng.Next()).ToList();
 
-        for (int i = 0; i < 30; i++)
-        {
-            //Debug.Log("i: " + i + " " + hexTypes[i]);
-        }
-
         var chunks = hexTypes.Chunk(100).ToList();
         for (int i = 0; i < chunks.Count(); i++)
         {
+            int row = i / chunksInRow;
+            int column = i % chunksInRow;
             List<HexType> hexTypes = chunks[i];
-            Chunks.Add(new Chunk(hexTypes.ToArray(), i, 0));
+            Chunks.Add(new Chunk(hexTypes.ToArray(), column, row));
         }
     }
 }

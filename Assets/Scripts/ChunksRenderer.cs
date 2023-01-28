@@ -18,7 +18,7 @@ public class ChunksRenderer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < mapGenerator.Chunks.Count && i < 40; i++)
+        for (int i = 0; i < mapGenerator.Chunks.Count && i < 200; i++)
         {
             LoadChunk(mapGenerator.Chunks[i]);
         }
@@ -28,10 +28,10 @@ public class ChunksRenderer : MonoBehaviour
     {
         SpriteRenderer hexRenderer = hex.GetComponent<SpriteRenderer>();
         Vector2 hexSize = hexRenderer.size;
-        Vector2 chunkSize = hexSize * 10;
+        float heightAdjustment = (float)(Math.Sqrt(Math.Pow(hexSize.y / 2f, 2f) - Math.Pow(hexSize.x / 2f, 2f)));
+        Vector2 chunkSize = new Vector2(hexSize.x * 10, (hexSize.y - heightAdjustment) * 10);
         Debug.Log("hexSize: " + hexSize);
         Debug.Log("chunkSize: " + chunkSize);
-        float heightAdjustment = (float)(Math.Sqrt(Math.Pow(hexSize.y / 2f, 2f) - Math.Pow(hexSize.x / 2f, 2f)));
         GameObject chunkParent = new GameObject("Chunk");
         chunkParent.transform.position = new Vector3(chunkSize.x * chunk.PositionX, chunkSize.y * chunk.PositionY, 0f);
         for (int i = 0; i < chunk.HexTypes.Length; i ++)
