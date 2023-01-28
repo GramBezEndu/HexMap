@@ -16,7 +16,11 @@ public class ChunksRenderer : MonoBehaviour
 
     private readonly int padding = 10;
 
-    private readonly int renderDistance = 4;
+    private readonly int renderDistance = 8;
+
+    private GameObject allChunks;
+
+    private int loadedChunksCount = 0;
 
     private Vector2 hexSize;
 
@@ -36,7 +40,6 @@ public class ChunksRenderer : MonoBehaviour
             if (value != currentX)
             {
                 currentX = value;
-                Debug.Log("X: " + currentX);
                 LoadChunksAroundCamera();
             }
         }
@@ -50,7 +53,6 @@ public class ChunksRenderer : MonoBehaviour
             if (value != currentY)
             {
                 currentY = value;
-                Debug.Log("Y: " + currentY);
                 LoadChunksAroundCamera();
             }
         }
@@ -69,8 +71,12 @@ public class ChunksRenderer : MonoBehaviour
         CurrentX = (int)(camera.transform.position.x / chunkSize.x);
         CurrentY = (int)(camera.transform.position.y / chunkSize.y);
 
+        allChunks = new GameObject("Loaded chunks");
+
         // TODO: Load chunks around camera
         LoadChunksAroundCamera();
+        // TODO: Unload chunks
+        UnloadChunks();
     }
 
     private void LoadChunksAroundCamera()
@@ -85,9 +91,21 @@ public class ChunksRenderer : MonoBehaviour
         {
             for (int j = minY; j < maxY; j++)
             {
-                LoadChunk(mapGenerator.Chunks[i, j]);
+                if (!mapGenerator.Chunks[i, j].IsLoaded)
+                {
+                    LoadChunk(mapGenerator.Chunks[i, j]);
+                    mapGenerator.Chunks[i, j].IsLoaded = true;
+                    loadedChunksCount++;
+                }
             }
         }
+
+        Debug.Log("CHUNKS COUNT: " + loadedChunksCount);
+    }
+
+    private void UnloadChunks()
+    {
+
     }
 
     private void Update()
@@ -99,6 +117,7 @@ public class ChunksRenderer : MonoBehaviour
     private void LoadChunk(Chunk chunk)
     {
         GameObject chunkParent = new GameObject(string.Format("[{0} {1}] Chunk", chunk.PositionX, chunk.PositionY));
+        chunkParent.transform.parent = allChunks.transform;
         chunkParent.transform.position = new Vector3(chunkSize.x * chunk.PositionX, chunkSize.y * chunk.PositionY, 0f);
         for (int i = 0; i < chunk.HexTypes.Length; i++)
         {

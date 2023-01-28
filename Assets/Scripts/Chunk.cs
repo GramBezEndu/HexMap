@@ -10,6 +10,8 @@ public class Chunk
 
     public HexType[] HexTypes { get; private set; }
 
+    public bool IsLoaded { get; set; }
+
     public Chunk(HexType[] hexTypes, int positionX, int positionY)
     {
         HexTypes = hexTypes;
