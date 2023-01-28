@@ -16,11 +16,11 @@ public class ChunksRenderer : MonoBehaviour
 
     private readonly int padding = 10;
 
-    private readonly int renderDistance = 8;
+    private readonly int renderDistance = 6;
 
     private GameObject allChunks;
 
-    private int loadedChunksCount = 0;
+    private List<Chunk> loadedChunks = new List<Chunk>();
 
     private Vector2 hexSize;
 
@@ -41,6 +41,7 @@ public class ChunksRenderer : MonoBehaviour
             {
                 currentX = value;
                 LoadChunksAroundCamera();
+                UnloadChunks();
             }
         }
     }
@@ -54,6 +55,7 @@ public class ChunksRenderer : MonoBehaviour
             {
                 currentY = value;
                 LoadChunksAroundCamera();
+                UnloadChunks();
             }
         }
     }
@@ -75,7 +77,6 @@ public class ChunksRenderer : MonoBehaviour
 
         // TODO: Load chunks around camera
         LoadChunksAroundCamera();
-        // TODO: Unload chunks
         UnloadChunks();
     }
 
@@ -91,21 +92,32 @@ public class ChunksRenderer : MonoBehaviour
         {
             for (int j = minY; j < maxY; j++)
             {
-                if (!mapGenerator.Chunks[i, j].IsLoaded)
+                Chunk chunk = mapGenerator.Chunks[i, j];
+                if (!chunk.IsLoaded)
                 {
-                    LoadChunk(mapGenerator.Chunks[i, j]);
-                    mapGenerator.Chunks[i, j].IsLoaded = true;
-                    loadedChunksCount++;
+                    LoadChunk(chunk);
+                    chunk.IsLoaded = true;
+                    loadedChunks.Add(chunk);
                 }
             }
         }
 
-        Debug.Log("CHUNKS COUNT: " + loadedChunksCount);
+        Debug.Log("LOADED CHUNKS: " + loadedChunks.Count);
     }
 
     private void UnloadChunks()
     {
-
+        // TODO: Unload chunks
+        int unloadDistance = renderDistance + 2;
+        foreach (Chunk chunk in loadedChunks.ToArray())
+        {
+            if (Math.Abs(currentX - chunk.PositionX) > unloadDistance || Math.Abs(currentY - chunk.PositionY) > unloadDistance)
+            {
+                Destroy(GameObject.Find(string.Format("[{0} {1}] Chunk", chunk.PositionX, chunk.PositionY)));
+                chunk.IsLoaded = false;
+                loadedChunks.Remove(chunk);
+            }
+        }
     }
 
     private void Update()
