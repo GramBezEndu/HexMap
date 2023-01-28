@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class Chunk
 {
-    private int positionX;
+    public int PositionX { get; private set; }
 
-    private int positionY;
+    public int PositionY { get; private set; }
 
     public HexType[] HexTypes { get; private set; }
 
-    public Chunk(HexType[] hexTypes)
+    public Chunk(HexType[] hexTypes, int positionX, int positionY)
     {
         HexTypes = hexTypes;
+        PositionX = positionX;
+        PositionY = positionY;
     }
 }

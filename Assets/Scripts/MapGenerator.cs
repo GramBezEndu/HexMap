@@ -23,7 +23,7 @@ public class MapGenerator : MonoBehaviour
 
     private List<HexType> hexTypes = new List<HexType>();
 
-    public Chunk TestChunk { get; private set; }
+    public List<Chunk> Chunks { get; private set; } = new List<Chunk>();
 
     private void Awake()
     {
@@ -42,6 +42,11 @@ public class MapGenerator : MonoBehaviour
             //Debug.Log("i: " + i + " " + hexTypes[i]);
         }
 
-        TestChunk = new Chunk(hexTypes.Take(100).ToArray());
+        var chunks = hexTypes.Chunk(100).ToList();
+        for (int i = 0; i < chunks.Count(); i++)
+        {
+            List<HexType> hexTypes = chunks[i];
+            Chunks.Add(new Chunk(hexTypes.ToArray(), i, 0));
+        }
     }
 }

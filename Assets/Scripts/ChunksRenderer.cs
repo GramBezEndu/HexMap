@@ -13,18 +13,27 @@ public class ChunksRenderer : MonoBehaviour
 
     private readonly int padding = 10;
 
+    private readonly int renderDistance = 5;
+
     // Start is called before the first frame update
     void Start()
     {
-        RenderChunk(mapGenerator.TestChunk);
+        for (int i = 0; i < mapGenerator.Chunks.Count && i < 40; i++)
+        {
+            LoadChunk(mapGenerator.Chunks[i]);
+        }
     }
 
-    private void RenderChunk(Chunk chunk)
+    private void LoadChunk(Chunk chunk)
     {
         SpriteRenderer hexRenderer = hex.GetComponent<SpriteRenderer>();
         Vector2 hexSize = hexRenderer.size;
+        Vector2 chunkSize = hexSize * 10;
         Debug.Log("hexSize: " + hexSize);
+        Debug.Log("chunkSize: " + chunkSize);
         float heightAdjustment = (float)(Math.Sqrt(Math.Pow(hexSize.y / 2f, 2f) - Math.Pow(hexSize.x / 2f, 2f)));
+        GameObject chunkParent = new GameObject("Chunk");
+        chunkParent.transform.position = new Vector3(chunkSize.x * chunk.PositionX, chunkSize.y * chunk.PositionY, 0f);
         for (int i = 0; i < chunk.HexTypes.Length; i ++)
         {
             int row = i / 10;
@@ -36,7 +45,9 @@ public class ChunksRenderer : MonoBehaviour
                 offset = hexSize.x / 2f;
             }
 
-            GameObject hexCell = Instantiate(hex, new Vector3(offset + (column * hexSize.x), row * (hexSize.y - heightAdjustment), 0), Quaternion.identity);
+            GameObject hexCell = Instantiate(hex);
+            hexCell.transform.parent = chunkParent.transform;
+            hexCell.transform.localPosition = new Vector3(offset + (column * hexSize.x), row * (hexSize.y - heightAdjustment), 0);
             hexCell.GetComponent<SpriteRenderer>().color = GetColor(chunk.HexTypes[i]);
         }
     }
