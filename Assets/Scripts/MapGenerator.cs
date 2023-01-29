@@ -13,15 +13,15 @@ public enum HexType
 
 public class MapGenerator : MonoBehaviour
 {
-    private readonly int chunksInRow = 100;
+    private readonly int chunksInRow = 10;
 
-    private readonly int blueCount = 600000;
+    private readonly int blueCount = /*600000*/20000;
 
-    private readonly int greyCount = 250000;
+    private readonly int greyCount = /*250000*/0;
 
-    private readonly int greenCount = 100000;
+    private readonly int greenCount = /*100000*/0;
 
-    private readonly int yellowCount = 50000;
+    private readonly int yellowCount = /*50000*/20000;
 
     private List<HexType> hexTypes = new List<HexType>();
 
@@ -41,13 +41,17 @@ public class MapGenerator : MonoBehaviour
 
         Chunks = new Chunk[chunksInRow, chunksInRow];
 
-        var chunks = hexTypes.Chunk(100).ToList();
+        var chunks = hexTypes.Chunk(400).ToList();
         for (int i = 0; i < chunks.Count(); i++)
         {
             int row = i / chunksInRow;
             int column = i % chunksInRow;
             List<HexType> hexTypes = chunks[i];
-            var currentChunk = new Chunk(hexTypes.ToArray(), column, row);
+            //var currentChunk = new Chunk(hexTypes.ToArray(), column, row);
+            //Chunks[column, row] = currentChunk;
+            var chunkParent = new GameObject("Chunk");
+            var currentChunk = chunkParent.AddComponent<Chunk>();
+            currentChunk.PositionX = i;
             Chunks[column, row] = currentChunk;
         }
     }
