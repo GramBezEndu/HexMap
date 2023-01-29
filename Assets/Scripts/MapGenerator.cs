@@ -13,19 +13,19 @@ public enum HexType
 
 public class MapGenerator : MonoBehaviour
 {
-    private readonly int chunksInRow = 10;
+    private readonly int chunksInRow = 2;
 
-    private readonly int blueCount = /*600000*/20000;
+    private readonly int blueCount = 400;
 
-    private readonly int greyCount = /*250000*/0;
+    private readonly int greyCount = 400;
 
-    private readonly int greenCount = /*100000*/0;
+    private readonly int greenCount = 400;
 
-    private readonly int yellowCount = /*50000*/20000;
+    private readonly int yellowCount = 400;
 
     private List<HexType> hexTypes = new List<HexType>();
 
-    public Chunk[,] Chunks { get; private set; }
+    public ChunkInfo[,] Chunks { get; private set; }
 
     private void Awake()
     {
@@ -39,7 +39,8 @@ public class MapGenerator : MonoBehaviour
         System.Random rng = new System.Random();
         hexTypes = hexTypes.OrderBy(x => rng.Next()).ToList();
 
-        Chunks = new Chunk[chunksInRow, chunksInRow];
+        // Create chunks
+        Chunks = new ChunkInfo[chunksInRow, chunksInRow];
 
         var chunks = hexTypes.Chunk(400).ToList();
         for (int i = 0; i < chunks.Count(); i++)
@@ -47,12 +48,19 @@ public class MapGenerator : MonoBehaviour
             int row = i / chunksInRow;
             int column = i % chunksInRow;
             List<HexType> hexTypes = chunks[i];
-            //var currentChunk = new Chunk(hexTypes.ToArray(), column, row);
-            //Chunks[column, row] = currentChunk;
-            var chunkParent = new GameObject("Chunk");
-            var currentChunk = chunkParent.AddComponent<Chunk>();
-            currentChunk.PositionX = i;
+            var currentChunk = new ChunkInfo(hexTypes.ToArray(), column, row);
             Chunks[column, row] = currentChunk;
+        }
+
+        // Render test
+        // TODO: Move this code to different class
+        for (int i = 0; i < Chunks.GetLength(0); i++)
+        {
+            for (int j = 0; j < Chunks.GetLength(1); j++)
+            {
+                ChunkRenderer test = new ChunkRenderer(Chunks[i, j]);
+                test.InitChunk();
+            }
         }
     }
 }

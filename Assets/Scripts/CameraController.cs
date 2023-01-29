@@ -8,17 +8,6 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private float speed = 0.05f;
 
-    private new Camera camera;
-
-    private int chunkX;
-
-    private int chunkY;
-
-    private void Awake()
-    {
-        camera = GetComponent<Camera>();
-    }
-
     private void LateUpdate()
     {
         Vector2 movement = Vector2.zero;

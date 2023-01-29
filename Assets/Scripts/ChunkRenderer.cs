@@ -1,35 +1,29 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Chunk : MonoBehaviour
+public class ChunkRenderer
 {
-    public int PositionX { get; set; }
+    public ChunkInfo ChunkInfo { get; private set; }
 
-    public int PositionY { get; set; }
+    private GameObject chunkGO;
 
-    private MeshFilter meshFilter;
-
-    private MeshRenderer meshRenderer;
-
-    private HexInfo[] hexes;
-
-    private readonly int chunkLength = 20;
-
-    private int cellCount;
-
-    private void Awake()
+    public ChunkRenderer(ChunkInfo chunkInfo)
     {
-        meshFilter = gameObject.AddComponent<MeshFilter>();
-        meshRenderer = gameObject.AddComponent<MeshRenderer>();
+        ChunkInfo = chunkInfo;
     }
 
-    private void Start()
+    public void InitChunk()
     {
-        cellCount = chunkLength * chunkLength;
-        hexes = new HexInfo[cellCount];
-        for (int i = 0; i < cellCount; i++)
+        chunkGO = new GameObject("Chunk");
+        var meshFilter = chunkGO.AddComponent<MeshFilter>();
+        var meshRenderer = chunkGO.AddComponent<MeshRenderer>();
+
+        var chunkLength = HexSharedInfo.Instance.ChunkLength;
+        var cellCount = chunkLength * chunkLength;
+        var hexes = new HexInfo[cellCount];
+
+        for (int i = 0; i < ChunkInfo.HexType.Length; i++)
         {
             int row = i / chunkLength;
             int column = i % chunkLength;
@@ -42,11 +36,11 @@ public class Chunk : MonoBehaviour
 
             hexes[i] = new HexInfo()
             {
-                Chunk = this,
                 LocalPosition = new Vector3(
                     offset + HexSharedInfo.Instance.HexSize.x * column,
                     (HexSharedInfo.Instance.HexSize.y - HexSharedInfo.Instance.HeightAdjustment) * row,
                     0f),
+                HexType = ChunkInfo.HexType[i],
             };
 
             hexes[i].InitializeMesh();
@@ -69,6 +63,8 @@ public class Chunk : MonoBehaviour
         meshRenderer.material = HexSharedInfo.Instance.SharedMaterial;
         meshRenderer.material.mainTexture = HexSharedInfo.Instance.Texture;
 
-        gameObject.transform.position = new Vector2(PositionX * 100f, PositionY * 100f);
+        chunkGO.transform.position = new Vector2(
+            ChunkInfo.Column * HexSharedInfo.Instance.ChunkSize.x,
+            ChunkInfo.Row * HexSharedInfo.Instance.ChunkSize.y);
     }
 }

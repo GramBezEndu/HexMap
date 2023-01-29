@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class HexInfo
 {
-    public Chunk Chunk { get; set; }
-
     public Mesh Mesh { get; private set; }
 
     public Vector3 LocalPosition { get; set; }

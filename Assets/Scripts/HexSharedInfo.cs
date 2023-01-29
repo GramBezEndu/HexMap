@@ -22,6 +22,10 @@ public class HexSharedInfo : MonoBehaviour
 
     public Vector2 HexSize { get; private set; }
 
+    public int ChunkLength { get; } = 20;
+
+    public Vector2 ChunkSize { get; private set; }
+
     public float HeightAdjustment { get; private set; }
 
     private void Awake()
@@ -33,9 +37,8 @@ public class HexSharedInfo : MonoBehaviour
         hexHelperGO.AddComponent<MeshRenderer>();
         MeshCollider collider = hexHelperGO.AddComponent<MeshCollider>();
         HexSize = collider.bounds.size;
-        Debug.Log("hSize: " + HexSize);
         HeightAdjustment = (HexSize.y - HexSize.y / 2f) / 2f;
-        Debug.Log("hAdj: " + HeightAdjustment);
+        ChunkSize = new Vector2(HexSize.x * 10, (HexSize.y - HeightAdjustment) * 10);
         Destroy(hexHelperGO);
 
         instance = this;
