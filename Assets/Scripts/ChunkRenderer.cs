@@ -4,18 +4,11 @@ using UnityEngine;
 
 public class ChunkRenderer
 {
-    public ChunkInfo ChunkInfo { get; private set; }
-
     private GameObject chunkGO;
 
-    public ChunkRenderer(ChunkInfo chunkInfo)
+    public void LoadChunk(ChunkInfo chunkInfo)
     {
-        ChunkInfo = chunkInfo;
-    }
-
-    public void InitChunk()
-    {
-        chunkGO = new GameObject("Chunk");
+        chunkGO = new GameObject(string.Format("[{0} {1}] Chunk", chunkInfo.Column, chunkInfo.Row));
         var meshFilter = chunkGO.AddComponent<MeshFilter>();
         var meshRenderer = chunkGO.AddComponent<MeshRenderer>();
 
@@ -23,7 +16,7 @@ public class ChunkRenderer
         var cellCount = chunkLength * chunkLength;
         var hexes = new HexInfo[cellCount];
 
-        for (int i = 0; i < ChunkInfo.HexType.Length; i++)
+        for (int i = 0; i < chunkInfo.HexType.Length; i++)
         {
             int row = i / chunkLength;
             int column = i % chunkLength;
@@ -40,7 +33,7 @@ public class ChunkRenderer
                     offset + HexSharedInfo.Instance.HexSize.x * column,
                     (HexSharedInfo.Instance.HexSize.y - HexSharedInfo.Instance.HeightAdjustment) * row,
                     0f),
-                HexType = ChunkInfo.HexType[i],
+                HexType = chunkInfo.HexType[i],
             };
 
             hexes[i].InitializeMesh();
@@ -64,7 +57,12 @@ public class ChunkRenderer
         meshRenderer.material.mainTexture = HexSharedInfo.Instance.Texture;
 
         chunkGO.transform.position = new Vector2(
-            ChunkInfo.Column * HexSharedInfo.Instance.ChunkSize.x,
-            ChunkInfo.Row * HexSharedInfo.Instance.ChunkSize.y);
+            chunkInfo.Column * HexSharedInfo.Instance.ChunkSize.x,
+            chunkInfo.Row * HexSharedInfo.Instance.ChunkSize.y);
+    }
+
+    public void UnloadChunk(ChunkInfo chunkInfo)
+    {
+        Object.Destroy(GameObject.Find(string.Format("[{0} {1}] Chunk", chunkInfo.Column, chunkInfo.Row)));
     }
 }

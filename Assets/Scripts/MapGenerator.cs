@@ -13,15 +13,15 @@ public enum HexType
 
 public class MapGenerator : MonoBehaviour
 {
-    private readonly int chunksInRow = 2;
+    public int ChunksInRow { get; } = 50;
 
-    private readonly int blueCount = 400;
+    private readonly int blueChance = 60;
 
-    private readonly int greyCount = 400;
+    private readonly int greyChance = 25;
 
-    private readonly int greenCount = 400;
+    private readonly int greenChance = 10;
 
-    private readonly int yellowCount = 400;
+    private readonly int yellowChance = 5;
 
     private List<HexType> hexTypes = new List<HexType>();
 
@@ -29,38 +29,39 @@ public class MapGenerator : MonoBehaviour
 
     private void Awake()
     {
+        int hexCount = ChunksInRow * ChunksInRow * HexSharedInfo.Instance.ChunkLength * HexSharedInfo.Instance.ChunkLength;
         // Add all hexes
-        hexTypes.AddRange(Enumerable.Repeat(HexType.Blue, blueCount));
-        hexTypes.AddRange(Enumerable.Repeat(HexType.Gray, greyCount));
-        hexTypes.AddRange(Enumerable.Repeat(HexType.Green, greenCount));
-        hexTypes.AddRange(Enumerable.Repeat(HexType.Yellow, yellowCount));
+        hexTypes.AddRange(Enumerable.Repeat(HexType.Blue, (int)(blueChance * hexCount / 100f)));
+        hexTypes.AddRange(Enumerable.Repeat(HexType.Gray, (int)(greyChance * hexCount / 100f)));
+        hexTypes.AddRange(Enumerable.Repeat(HexType.Green, (int)(greenChance * hexCount / 100f)));
+        hexTypes.AddRange(Enumerable.Repeat(HexType.Yellow, (int)(yellowChance * hexCount / 100f)));
 
         // Shuffle
         System.Random rng = new System.Random();
         hexTypes = hexTypes.OrderBy(x => rng.Next()).ToList();
 
         // Create chunks
-        Chunks = new ChunkInfo[chunksInRow, chunksInRow];
+        Chunks = new ChunkInfo[ChunksInRow, ChunksInRow];
 
         var chunks = hexTypes.Chunk(400).ToList();
         for (int i = 0; i < chunks.Count(); i++)
         {
-            int row = i / chunksInRow;
-            int column = i % chunksInRow;
+            int row = i / ChunksInRow;
+            int column = i % ChunksInRow;
             List<HexType> hexTypes = chunks[i];
             var currentChunk = new ChunkInfo(hexTypes.ToArray(), column, row);
             Chunks[column, row] = currentChunk;
         }
 
-        // Render test
-        // TODO: Move this code to different class
-        for (int i = 0; i < Chunks.GetLength(0); i++)
-        {
-            for (int j = 0; j < Chunks.GetLength(1); j++)
-            {
-                ChunkRenderer test = new ChunkRenderer(Chunks[i, j]);
-                test.InitChunk();
-            }
-        }
+        //// Render test
+        //// TODO: Move this code to different class
+        //ChunkRenderer testRenderer = new ChunkRenderer();
+        //for (int i = 0; i < Chunks.GetLength(0); i++)
+        //{
+        //    for (int j = 0; j < Chunks.GetLength(1); j++)
+        //    {
+        //        testRenderer.LoadChunk(Chunks[i, j]);
+        //    }
+        //}
     }
 }
