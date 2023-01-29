@@ -128,6 +128,7 @@ public class ChunksRenderer : MonoBehaviour
 
     private void LoadChunk(Chunk chunk)
     {
+        return;
         GameObject chunkParent = new GameObject(string.Format("[{0} {1}] Chunk", chunk.PositionX, chunk.PositionY));
         chunkParent.transform.parent = allChunks.transform;
         chunkParent.transform.position = new Vector3(chunkSize.x * chunk.PositionX, chunkSize.y * chunk.PositionY, 0f);
