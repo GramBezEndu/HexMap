@@ -11,7 +11,7 @@ public class ChunkManager : MonoBehaviour
     [SerializeField]
     private MapGenerator mapGenerator;
 
-    ChunkRenderer chunkRenderer = new ChunkRenderer();
+    ChunkLoader chunkLoader = new ChunkLoader();
 
     private readonly int renderDistance = 3;
 
@@ -70,7 +70,7 @@ public class ChunkManager : MonoBehaviour
         {
             if (Math.Abs(currentX - chunk.Column) >= unloadDistance || Math.Abs(currentY - chunk.Row) >= unloadDistance)
             {
-                chunkRenderer.UnloadChunk(chunk);
+                chunkLoader.UnloadChunk(chunk);
                 loadedChunks.Remove(chunk);
             }
         }
@@ -90,7 +90,7 @@ public class ChunkManager : MonoBehaviour
                 ChunkInfo chunk = mapGenerator.Chunks[i, j];
                 if (!loadedChunks.Contains(chunk))
                 {
-                    chunkRenderer.LoadChunk(chunk);
+                    chunkLoader.LoadChunk(chunk);
                     loadedChunks.Add(chunk);
                 }
             }

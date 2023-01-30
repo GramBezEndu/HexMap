@@ -25,14 +25,18 @@ public class ChunkPool : MonoBehaviour
 
     public Material SharedMaterial => sharedMaterial;
 
+    private GameObject chunkPool;
+
     private void Awake()
     {
         instance = this;
         HexSharedInfo = new HexSharedInfo();
         chunks = new ChunkData[chunkCount];
+        chunkPool = new GameObject("Chunk Pool");
         for (int i = 0; i < chunkCount; i++)
         {
             chunks[i] = new ChunkData();
+            chunks[i].ChunkGO.transform.parent = chunkPool.transform;
         }
     }
 
