@@ -562,8 +562,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52e9a188da4d7304ea52211d31799f98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  texture: {fileID: 0}
-  sharedMaterial: {fileID: 0}
+  texture: {fileID: 10307, guid: 0000000000000000f000000000000000, type: 0}
+  sharedMaterial: {fileID: 2100000, guid: e47b28a1078766942aefdbb7bf013e55, type: 2}
 --- !u!4 &586509084
 Transform:
   m_ObjectHideFlags: 0
