@@ -1,20 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class FpsCounter : MonoBehaviour
 {
-    TextMeshProUGUI fps;
+    private TextMeshProUGUI fps;
 
-    int currentFps;
+    private int currentFps;
 
     private void Awake()
     {
         fps = GetComponent<TextMeshProUGUI>();
     }
 
-    // Update is called once per frame
     private void Update()
     {
         currentFps = (int)(1f / Time.unscaledDeltaTime);

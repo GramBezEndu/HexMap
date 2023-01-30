@@ -1,14 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HexSharedInfo
 {
+    public const int ChunkLength = 20;
+
     public Mesh SharedMesh { get; private set; }
 
     public Vector2 HexSize { get; private set; }
-
-    public const int ChunkLength = 20;
 
     public Vector2 ChunkSize { get; private set; }
 

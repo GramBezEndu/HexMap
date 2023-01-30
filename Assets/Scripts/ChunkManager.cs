@@ -1,19 +1,18 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ChunkManager : MonoBehaviour
 {
+    private const int renderDistance = 3;
+
     [SerializeField]
     private new Camera camera;
 
     [SerializeField]
     private MapGenerator mapGenerator;
 
-    ChunkLoader chunkLoader = new ChunkLoader();
-
-    private readonly int renderDistance = 3;
+    private ChunkLoader chunkLoader = new ChunkLoader();
 
     private List<ChunkInfo> loadedChunks = new List<ChunkInfo>();
 

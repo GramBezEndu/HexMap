@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,13 +19,7 @@ public class HexInfo
                 hexType = value;
                 if (Mesh != null)
                 {
-                    List<Color> colors = new List<Color>();
-                    foreach (Vector3 v in Mesh.vertices)
-                    {
-                        colors.Add(GetColor(HexType));
-                    }
-
-                    Mesh.colors = colors.ToArray();
+                    UpdateMeshColor();
                 }
             }
         }
@@ -38,14 +31,19 @@ public class HexInfo
         Mesh.vertices = ChunkPool.Instance.HexSharedInfo.SharedMesh.vertices;
         Mesh.uv = ChunkPool.Instance.HexSharedInfo.SharedMesh.uv;
         Mesh.triangles = ChunkPool.Instance.HexSharedInfo.SharedMesh.triangles;
-        var colors = new List<Color>();
-        foreach (Vector3 v in Mesh.vertices)
+        UpdateMeshColor();
+        Mesh.RecalculateNormals();
+    }
+
+    private void UpdateMeshColor()
+    {
+        List<Color> colors = new List<Color>();
+        for (int i = 0; i < Mesh.vertices.Length; i++)
         {
             colors.Add(GetColor(HexType));
         }
 
         Mesh.colors = colors.ToArray();
-        Mesh.RecalculateNormals();
     }
 
     private Color GetColor(HexType type)

@@ -1,31 +1,29 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ChunkPool : MonoBehaviour
 {
+    private const int chunkCount = 64;
+
+    private static ChunkPool instance;
+
     [SerializeField]
     private Texture texture;
 
     [SerializeField]
     private Material sharedMaterial;
 
-    private static ChunkPool instance;
+    private GameObject chunkPool;
+
+    private ChunkData[] chunks;
 
     public static ChunkPool Instance => instance;
 
     public HexSharedInfo HexSharedInfo { get; private set; }
 
-    private ChunkData[] chunks;
-
-    private readonly int chunkCount = 64;
-
     public Texture Texture => texture;
 
     public Material SharedMaterial => sharedMaterial;
-
-    private GameObject chunkPool;
 
     private void Awake()
     {

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -13,8 +12,6 @@ public enum HexType
 
 public class MapGenerator : MonoBehaviour
 {
-    public int ChunksInRow { get; } = 50;
-
     private readonly int blueChance = 60;
 
     private readonly int greyChance = 25;
@@ -24,6 +21,8 @@ public class MapGenerator : MonoBehaviour
     private readonly int yellowChance = 5;
 
     private List<HexType> hexTypes = new List<HexType>();
+
+    public int ChunksInRow => 50;
 
     public ChunkInfo[,] Chunks { get; private set; }
 
@@ -43,25 +42,14 @@ public class MapGenerator : MonoBehaviour
         // Create chunks
         Chunks = new ChunkInfo[ChunksInRow, ChunksInRow];
 
-        var chunks = hexTypes.Chunk(400).ToList();
+        List<List<HexType>> chunks = hexTypes.Chunk(HexSharedInfo.ChunkLength * HexSharedInfo.ChunkLength).ToList();
         for (int i = 0; i < chunks.Count(); i++)
         {
             int row = i / ChunksInRow;
             int column = i % ChunksInRow;
             List<HexType> hexTypes = chunks[i];
-            var currentChunk = new ChunkInfo(hexTypes.ToArray(), column, row);
+            ChunkInfo currentChunk = new ChunkInfo(hexTypes.ToArray(), column, row);
             Chunks[column, row] = currentChunk;
         }
-
-        //// Render test
-        //// TODO: Move this code to different class
-        //ChunkRenderer testRenderer = new ChunkRenderer();
-        //for (int i = 0; i < Chunks.GetLength(0); i++)
-        //{
-        //    for (int j = 0; j < Chunks.GetLength(1); j++)
-        //    {
-        //        testRenderer.LoadChunk(Chunks[i, j]);
-        //    }
-        //}
     }
 }

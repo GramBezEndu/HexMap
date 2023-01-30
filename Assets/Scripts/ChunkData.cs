@@ -15,7 +15,6 @@ public class ChunkData
     public ChunkData()
     {
         ChunkGO = new GameObject("Unused");
-        //chunks[i].transform.parent = gameObject.transform;
         MeshFilter = ChunkGO.AddComponent<MeshFilter>();
         MeshRenderer = ChunkGO.AddComponent<MeshRenderer>();
         MeshRenderer.material = ChunkPool.Instance.SharedMaterial;
