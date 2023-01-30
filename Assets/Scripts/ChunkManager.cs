@@ -65,10 +65,10 @@ public class ChunkManager : MonoBehaviour
 
     private void UnloadChunks()
     {
-        int unloadDistance = renderDistance + 2;
+        int unloadDistance = renderDistance + 1;
         foreach (ChunkInfo chunk in loadedChunks.ToArray())
         {
-            if (Math.Abs(currentX - chunk.Column) > unloadDistance || Math.Abs(currentY - chunk.Row) > unloadDistance)
+            if (Math.Abs(currentX - chunk.Column) >= unloadDistance || Math.Abs(currentY - chunk.Row) >= unloadDistance)
             {
                 chunkRenderer.UnloadChunk(chunk);
                 loadedChunks.Remove(chunk);

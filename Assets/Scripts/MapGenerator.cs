@@ -29,7 +29,7 @@ public class MapGenerator : MonoBehaviour
 
     private void Awake()
     {
-        int hexCount = ChunksInRow * ChunksInRow * HexSharedInfo.Instance.ChunkLength * HexSharedInfo.Instance.ChunkLength;
+        int hexCount = ChunksInRow * ChunksInRow * HexSharedInfo.ChunkLength * HexSharedInfo.ChunkLength;
         // Add all hexes
         hexTypes.AddRange(Enumerable.Repeat(HexType.Blue, (int)(blueChance * hexCount / 100f)));
         hexTypes.AddRange(Enumerable.Repeat(HexType.Gray, (int)(greyChance * hexCount / 100f)));

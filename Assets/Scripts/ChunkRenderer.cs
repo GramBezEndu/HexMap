@@ -8,11 +8,13 @@ public class ChunkRenderer
 
     public void LoadChunk(ChunkInfo chunkInfo)
     {
-        chunkGO = new GameObject(string.Format("[{0} {1}] Chunk", chunkInfo.Column, chunkInfo.Row));
-        var meshFilter = chunkGO.AddComponent<MeshFilter>();
-        var meshRenderer = chunkGO.AddComponent<MeshRenderer>();
+        chunkGO = ChunkPool.Instance.GetChunk();
+        chunkGO.SetActive(true);
+        chunkGO.name = string.Format("[{0} {1}] Chunk", chunkInfo.Column, chunkInfo.Row);
+        var meshFilter = chunkGO.GetComponent<MeshFilter>();
+        var meshRenderer = chunkGO.GetComponent<MeshRenderer>();
 
-        var chunkLength = HexSharedInfo.Instance.ChunkLength;
+        var chunkLength = HexSharedInfo.ChunkLength;
         var cellCount = chunkLength * chunkLength;
         var hexes = new HexInfo[cellCount];
 
@@ -63,6 +65,8 @@ public class ChunkRenderer
 
     public void UnloadChunk(ChunkInfo chunkInfo)
     {
-        Object.Destroy(GameObject.Find(string.Format("[{0} {1}] Chunk", chunkInfo.Column, chunkInfo.Row)));
+        var chunk = GameObject.Find(string.Format("[{0} {1}] Chunk", chunkInfo.Column, chunkInfo.Row));
+        chunk.SetActive(false);
+        chunk.name = "Unused";
     }
 }

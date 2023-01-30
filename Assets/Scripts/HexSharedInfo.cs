@@ -22,7 +22,7 @@ public class HexSharedInfo : MonoBehaviour
 
     public Vector2 HexSize { get; private set; }
 
-    public int ChunkLength { get; } = 20;
+    public const int ChunkLength = 20;
 
     public Vector2 ChunkSize { get; private set; }
 
