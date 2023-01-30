@@ -2,23 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HexSharedInfo : MonoBehaviour
+public class HexSharedInfo
 {
-    public static HexSharedInfo Instance => instance;
-
-    [SerializeField]
-    private Texture texture;
-
-    [SerializeField]
-    private Material sharedMaterial;
-
-    private static HexSharedInfo instance;
-
     public Mesh SharedMesh { get; private set; }
-
-    public Texture Texture => texture;
-
-    public Material SharedMaterial => sharedMaterial;
 
     public Vector2 HexSize { get; private set; }
 
@@ -28,7 +14,7 @@ public class HexSharedInfo : MonoBehaviour
 
     public float HeightAdjustment { get; private set; }
 
-    private void Awake()
+    public HexSharedInfo()
     {
         CreateSharedMesh();
         GameObject hexHelperGO = new GameObject("Temp Hex");
@@ -39,9 +25,7 @@ public class HexSharedInfo : MonoBehaviour
         HexSize = collider.bounds.size;
         HeightAdjustment = (HexSize.y - HexSize.y / 2f) / 2f;
         ChunkSize = new Vector2(HexSize.x * 10, (HexSize.y - HeightAdjustment) * 10);
-        Destroy(hexHelperGO);
-
-        instance = this;
+        Object.Destroy(hexHelperGO);
     }
 
     private void CreateSharedMesh()

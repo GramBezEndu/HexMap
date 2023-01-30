@@ -13,9 +13,9 @@ public class HexInfo
     public void InitializeMesh()
     {
         Mesh = new Mesh();
-        Mesh.vertices = HexSharedInfo.Instance.SharedMesh.vertices;
-        Mesh.uv = HexSharedInfo.Instance.SharedMesh.uv;
-        Mesh.triangles = HexSharedInfo.Instance.SharedMesh.triangles;
+        Mesh.vertices = ChunkPool.Instance.HexSharedInfo.SharedMesh.vertices;
+        Mesh.uv = ChunkPool.Instance.HexSharedInfo.SharedMesh.uv;
+        Mesh.triangles = ChunkPool.Instance.HexSharedInfo.SharedMesh.triangles;
         var colors = new List<Color>();
         foreach (Vector3 v in Mesh.vertices)
         {

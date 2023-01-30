@@ -27,14 +27,14 @@ public class ChunkRenderer
             float offset = 0f;
             if (isRowEven)
             {
-                offset = HexSharedInfo.Instance.HexSize.x / 2f;
+                offset = ChunkPool.Instance.HexSharedInfo.HexSize.x / 2f;
             }
 
             hexes[i] = new HexInfo()
             {
                 LocalPosition = new Vector3(
-                    offset + HexSharedInfo.Instance.HexSize.x * column,
-                    (HexSharedInfo.Instance.HexSize.y - HexSharedInfo.Instance.HeightAdjustment) * row,
+                    offset + ChunkPool.Instance.HexSharedInfo.HexSize.x * column,
+                    (ChunkPool.Instance.HexSharedInfo.HexSize.y - ChunkPool.Instance.HexSharedInfo.HeightAdjustment) * row,
                     0f),
                 HexType = chunkInfo.HexType[i],
             };
@@ -56,12 +56,12 @@ public class ChunkRenderer
         meshFilter.mesh.CombineMeshes(combineInstances);
         meshFilter.mesh.RecalculateNormals();
 
-        meshRenderer.material = HexSharedInfo.Instance.SharedMaterial;
-        meshRenderer.material.mainTexture = HexSharedInfo.Instance.Texture;
+        meshRenderer.material = ChunkPool.Instance.SharedMaterial;
+        meshRenderer.material.mainTexture = ChunkPool.Instance.Texture;
 
         chunkGO.transform.position = new Vector2(
-            chunkInfo.Column * HexSharedInfo.Instance.ChunkSize.x,
-            chunkInfo.Row * HexSharedInfo.Instance.ChunkSize.y);
+            chunkInfo.Column * ChunkPool.Instance.HexSharedInfo.ChunkSize.x,
+            chunkInfo.Row * ChunkPool.Instance.HexSharedInfo.ChunkSize.y);
     }
 
     public void UnloadChunk(ChunkInfo chunkInfo)

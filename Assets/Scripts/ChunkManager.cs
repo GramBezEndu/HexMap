@@ -51,16 +51,16 @@ public class ChunkManager : MonoBehaviour
 
     private void Start()
     {
-        CurrentX = (int)(camera.transform.position.x / HexSharedInfo.Instance.ChunkSize.x);
-        CurrentY = (int)(camera.transform.position.y / HexSharedInfo.Instance.ChunkSize.y);
+        CurrentX = (int)(camera.transform.position.x / ChunkPool.Instance.HexSharedInfo.ChunkSize.x);
+        CurrentY = (int)(camera.transform.position.y / ChunkPool.Instance.HexSharedInfo.ChunkSize.y);
 
         LoadChunksAroundCamera();
     }
 
     private void Update()
     {
-        CurrentX = (int)(camera.transform.position.x / HexSharedInfo.Instance.ChunkSize.x);
-        CurrentY = (int)(camera.transform.position.y / HexSharedInfo.Instance.ChunkSize.y);
+        CurrentX = (int)(camera.transform.position.x / ChunkPool.Instance.HexSharedInfo.ChunkSize.x);
+        CurrentY = (int)(camera.transform.position.y / ChunkPool.Instance.HexSharedInfo.ChunkSize.y);
     }
 
     private void UnloadChunks()
