@@ -8,11 +8,12 @@ public class ChunkRenderer
 
     public void LoadChunk(ChunkInfo chunkInfo)
     {
-        chunkGO = ChunkPool.Instance.GetChunk();
+        var chunkData = ChunkPool.Instance.GetChunk();
+        chunkGO = chunkData.ChunkGO;
         chunkGO.SetActive(true);
         chunkGO.name = string.Format("[{0} {1}] Chunk", chunkInfo.Column, chunkInfo.Row);
-        var meshFilter = chunkGO.GetComponent<MeshFilter>();
-        var meshRenderer = chunkGO.GetComponent<MeshRenderer>();
+        var meshFilter = chunkData.MeshFilter;
+        var meshRenderer = chunkData.MeshRenderer;
 
         var chunkLength = HexSharedInfo.ChunkLength;
         var cellCount = chunkLength * chunkLength;

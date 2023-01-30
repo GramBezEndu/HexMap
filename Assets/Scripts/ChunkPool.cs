@@ -9,29 +9,25 @@ public class ChunkPool : MonoBehaviour
 
     public static ChunkPool Instance => instance;
 
-    private GameObject[] chunks;
+    private ChunkData[] chunks;
 
     private readonly int chunkCount = 64;
 
     private void Awake()
     {
         instance = this;
-        chunks = new GameObject[chunkCount];
+        chunks = new ChunkData[chunkCount];
         for (int i = 0; i < chunkCount; i++)
         {
-            chunks[i] = new GameObject("Unused");
-            chunks[i].transform.parent = gameObject.transform;
-            chunks[i].AddComponent<MeshFilter>();
-            chunks[i].AddComponent<MeshRenderer>();
-            chunks[i].SetActive(false);
+            chunks[i] = new ChunkData();
         }
     }
 
-    public GameObject GetChunk()
+    public ChunkData GetChunk()
     {
         for (int i = 0; i < chunkCount; i++)
         {
-            if (!chunks[i].activeInHierarchy)
+            if (!chunks[i].ChunkGO.activeInHierarchy)
             {
                 return chunks[i];
             }
