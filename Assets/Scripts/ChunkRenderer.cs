@@ -17,29 +17,11 @@ public class ChunkRenderer
 
         var chunkLength = HexSharedInfo.ChunkLength;
         var cellCount = chunkLength * chunkLength;
-        var hexes = new HexInfo[cellCount];
+        var hexes = chunkData.Hexes;
 
         for (int i = 0; i < chunkInfo.HexType.Length; i++)
         {
-            int row = i / chunkLength;
-            int column = i % chunkLength;
-            bool isRowEven = (row % 2 == 0) ? true : false;
-            float offset = 0f;
-            if (isRowEven)
-            {
-                offset = ChunkPool.Instance.HexSharedInfo.HexSize.x / 2f;
-            }
-
-            hexes[i] = new HexInfo()
-            {
-                LocalPosition = new Vector3(
-                    offset + ChunkPool.Instance.HexSharedInfo.HexSize.x * column,
-                    (ChunkPool.Instance.HexSharedInfo.HexSize.y - ChunkPool.Instance.HexSharedInfo.HeightAdjustment) * row,
-                    0f),
-                HexType = chunkInfo.HexType[i],
-            };
-
-            hexes[i].InitializeMesh();
+            hexes[i].HexType = chunkInfo.HexType[i];
         }
 
         CombineInstance[] combineInstances = new CombineInstance[cellCount];

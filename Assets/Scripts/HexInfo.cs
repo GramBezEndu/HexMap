@@ -4,11 +4,33 @@ using UnityEngine;
 
 public class HexInfo
 {
+    private HexType hexType = HexType.Blue;
+
     public Mesh Mesh { get; private set; }
 
     public Vector3 LocalPosition { get; set; }
 
-    public HexType HexType { get; set; } = HexType.Blue;
+    public HexType HexType 
+    {
+        get => hexType;
+        set
+        {
+            if (hexType != value)
+            {
+                hexType = value;
+                if (Mesh != null)
+                {
+                    List<Color> colors = new List<Color>();
+                    foreach (Vector3 v in Mesh.vertices)
+                    {
+                        colors.Add(GetColor(HexType));
+                    }
+
+                    Mesh.colors = colors.ToArray();
+                }
+            }
+        }
+    }
 
     public void InitializeMesh()
     {
