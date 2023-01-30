@@ -18,6 +18,8 @@ public class ChunkData
         //chunks[i].transform.parent = gameObject.transform;
         MeshFilter = ChunkGO.AddComponent<MeshFilter>();
         MeshRenderer = ChunkGO.AddComponent<MeshRenderer>();
+        MeshRenderer.material = ChunkPool.Instance.SharedMaterial;
+        MeshRenderer.material.mainTexture = ChunkPool.Instance.Texture;
         ChunkGO.SetActive(false);
 
         int chunkLength = HexSharedInfo.ChunkLength;

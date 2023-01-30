@@ -38,9 +38,6 @@ public class ChunkRenderer
         meshFilter.mesh.CombineMeshes(combineInstances);
         meshFilter.mesh.RecalculateNormals();
 
-        meshRenderer.material = ChunkPool.Instance.SharedMaterial;
-        meshRenderer.material.mainTexture = ChunkPool.Instance.Texture;
-
         chunkGO.transform.position = new Vector2(
             chunkInfo.Column * ChunkPool.Instance.HexSharedInfo.ChunkSize.x,
             chunkInfo.Row * ChunkPool.Instance.HexSharedInfo.ChunkSize.y);
