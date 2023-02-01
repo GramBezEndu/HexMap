@@ -22,7 +22,7 @@ public class HexSharedInfo
         MeshCollider collider = hexHelperGO.AddComponent<MeshCollider>();
         HexSize = collider.bounds.size;
         HeightAdjustment = (HexSize.y - HexSize.y / 2f) / 2f;
-        ChunkSize = new Vector2(HexSize.x * 10, (HexSize.y - HeightAdjustment) * 10);
+        ChunkSize = new Vector2(HexSize.x * ChunkLength, (HexSize.y - HeightAdjustment) * ChunkLength);
         Object.Destroy(hexHelperGO);
     }
 
