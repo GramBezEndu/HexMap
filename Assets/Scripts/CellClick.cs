@@ -5,6 +5,14 @@ using UnityEngine;
 
 public class CellClick : MonoBehaviour
 {
+	[SerializeField]
+	private MapGenerator mapGenerator;
+
+	[SerializeField]
+	private GameObject hexDetailsPanel;
+
+	private HexDetails hexDetails;
+
 	private new Camera camera;
 
     private void Awake()
@@ -35,14 +43,32 @@ public class CellClick : MonoBehaviour
 	private void TouchCell(Vector3 position)
 	{
 		Vector2Int coordinates = FromPosition(position);
-		Debug.Log("touched at " + coordinates.ToString());
-		// TODO: Remove hardcoded values
-		int hexGlobalIndex = coordinates.x + coordinates.y * 1000 + coordinates.y / 2;
-		int chunkColumn = hexGlobalIndex % 1000;
-		int chunkRow = hexGlobalIndex / 1000;
+
+		int hexGlobalIndex = 
+			coordinates.x + coordinates.y * mapGenerator.ChunksInRow * HexSharedInfo.ChunkLength + coordinates.y / 2;
+
+		int chunkColumn = hexGlobalIndex % (mapGenerator.ChunksInRow * HexSharedInfo.ChunkLength);
+		int chunkRow = hexGlobalIndex / (mapGenerator.ChunksInRow * HexSharedInfo.ChunkLength);
+
 		int localColumn = hexGlobalIndex % HexSharedInfo.ChunkLength;
-		int localRow = (hexGlobalIndex / 1000) % HexSharedInfo.ChunkLength;
-		Debug.Log("index " + hexGlobalIndex + " local row: " + localRow + " local column: " + localColumn);
+		int localRow = (hexGlobalIndex / (mapGenerator.ChunksInRow * HexSharedInfo.ChunkLength)) % HexSharedInfo.ChunkLength;
+
+		int x = chunkColumn / HexSharedInfo.ChunkLength;
+		int y = chunkRow / HexSharedInfo.ChunkLength;
+
+		ChunkInfo chunkInfo = mapGenerator.Chunks[x, y];
+		HexType hexType = chunkInfo.HexType[localRow * HexSharedInfo.ChunkLength + localColumn];
+		hexDetails = new HexDetails()
+		{
+			HexType = hexType,
+		};
+
+		if (hexType == HexType.Yellow || hexType == HexType.Green)
+        {
+			Debug.Log(string.Format("Chunk [{0}] [{1}]", x, y));
+			Debug.Log("Hex type: " + hexType.ToString());
+			hexDetailsPanel.SetActive(!hexDetailsPanel.activeInHierarchy);
+		}
 	}
 
     private Vector2Int FromPosition(Vector3 position)
