@@ -6,29 +6,66 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [SerializeField]
-    private float speed = 0.05f;
+    private float speed = 100f;
+
+    [SerializeField]
+    MapGenerator mapGenerator;
+
+    private Vector3 dragOrigin;
+
+    private new Camera camera;
+
+    private Rect mapBounds;
+
+    private Vector2 cameraSize;
+
+    private void Awake()
+    {
+        camera = GetComponent<Camera>();
+        float cameraHeight = camera.orthographicSize * 2f;
+        cameraSize = new Vector2(
+            cameraHeight * ((float)Screen.width / Screen.height),
+            cameraHeight);
+    }
+
+    private void Start()
+    {
+        float offset = 5f;
+        float width = HexSharedInfo.ChunkLength * ChunkPool.Instance.HexSharedInfo.HexSize.x * mapGenerator.ChunksInRow;
+        float height = 
+            HexSharedInfo.ChunkLength * (ChunkPool.Instance.HexSharedInfo.HexSize.y - ChunkPool.Instance.HexSharedInfo.HeightAdjustment) * mapGenerator.ChunksInRow;
+        mapBounds = new Rect(
+            -offset,
+            -offset,
+            width + 2 * offset,
+            height + 2 * offset);
+    }
 
     private void LateUpdate()
     {
-        Vector2 movement = Vector2.zero;
-        if (Input.GetKey(KeyCode.D))
-        {
-            movement += new Vector2(speed, 0f);
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            movement -= new Vector2(speed, 0f);
-        }
+        CameraMovement();
+    }
 
-        if (Input.GetKey(KeyCode.W))
+    private void CameraMovement()
+    {
+        if (Input.GetMouseButtonDown(1))
         {
-            movement += new Vector2(0f, speed);
+            dragOrigin = Input.mousePosition;
         }
-        if (Input.GetKey(KeyCode.S))
+        else if (Input.GetMouseButton(1))
         {
-            movement -= new Vector2(0f, speed);
+            Vector3 position = Camera.main.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
+            Vector3 movement = new Vector3(position.x, position.y, 0) * speed * Time.deltaTime;
+            Vector3 newPosition = transform.position + movement;
+            newPosition = ClampToMapBounds(newPosition);
+            transform.position = newPosition;
         }
+    }
 
-        transform.position += (Vector3)movement;
+    private Vector3 ClampToMapBounds(Vector3 position)
+    {
+        float clampedX = Mathf.Clamp(position.x, mapBounds.min.x + cameraSize.x / 2, mapBounds.max.x - cameraSize.x / 2);
+        float clampedY = Mathf.Clamp(position.y, mapBounds.min.y + cameraSize.y / 2, mapBounds.max.y - cameraSize.y / 2);
+        return new Vector3(clampedX, clampedY, position.z);
     }
 }

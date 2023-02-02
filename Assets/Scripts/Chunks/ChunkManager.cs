@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ChunkManager : MonoBehaviour
 {
-    private const int renderDistance = 3;
+    private const int renderDistance = 2;
 
     [SerializeField]
     private new Camera camera;
