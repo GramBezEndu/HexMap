@@ -30,24 +30,30 @@ public class ChunkData
 
         for (int i = 0; i < Hexes.Length; i++)
         {
-            int row = i / chunkLength;
-            int column = i % chunkLength;
-            bool isRowEven = (row % 2 == 0) ? true : false;
-            float offset = 0f;
-            if (!isRowEven)
-            {
-                offset = ChunkPool.Instance.HexSharedInfo.HexSize.x / 2f;
-            }
-
             Hexes[i] = new HexInfo()
             {
-                LocalPosition = new Vector3(
-                    offset + ChunkPool.Instance.HexSharedInfo.HexSize.x * column,
-                    (ChunkPool.Instance.HexSharedInfo.HexSize.y - ChunkPool.Instance.HexSharedInfo.HeightAdjustment) * row,
-                    0f),
+                LocalPosition = GetHexPosition(i),
             };
 
             Hexes[i].InitializeMesh();
         }
+    }
+
+    private Vector3 GetHexPosition(int index)
+    {
+        int chunkLength = HexSharedInfo.ChunkLength;
+        int row = index / chunkLength;
+        int column = index % chunkLength;
+        bool isRowEven = (row % 2 == 0) ? true : false;
+        float offset = 0f;
+        if (!isRowEven)
+        {
+            offset = ChunkPool.Instance.HexSharedInfo.HexSize.x / 2f;
+        }
+        
+        return new Vector3(
+                    offset + ChunkPool.Instance.HexSharedInfo.HexSize.x * column,
+                    (ChunkPool.Instance.HexSharedInfo.HexSize.y - ChunkPool.Instance.HexSharedInfo.HeightAdjustment) * row,
+                    0f);
     }
 }

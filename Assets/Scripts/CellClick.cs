@@ -11,13 +11,14 @@ public class CellClick : MonoBehaviour
 	[SerializeField]
 	private GameObject hexDetailsPanel;
 
-	private HexDetails hexDetails;
+	private DisplayHexDetails displayHexDetails;
 
 	private new Camera camera;
 
     private void Awake()
     {
 		camera = GetComponent<Camera>();
+		displayHexDetails = hexDetailsPanel.GetComponent<DisplayHexDetails>();
     }
 
     private void Update()
@@ -53,22 +54,38 @@ public class CellClick : MonoBehaviour
 		int localColumn = hexGlobalIndex % HexSharedInfo.ChunkLength;
 		int localRow = (hexGlobalIndex / (mapGenerator.ChunksInRow * HexSharedInfo.ChunkLength)) % HexSharedInfo.ChunkLength;
 
+		// Global hex cell X, Y
 		int x = chunkColumn / HexSharedInfo.ChunkLength;
 		int y = chunkRow / HexSharedInfo.ChunkLength;
 
 		ChunkInfo chunkInfo = mapGenerator.Chunks[x, y];
 		HexType hexType = chunkInfo.HexType[localRow * HexSharedInfo.ChunkLength + localColumn];
-		hexDetails = new HexDetails()
+		HexDetails hexDetails = new HexDetails()
 		{
+			GlobalIndex = hexGlobalIndex,
 			HexType = hexType,
+			WorldPosition = GetWorldPosition(chunkColumn, chunkRow),
+			ChunkCell = new Vector2Int(localColumn, localRow),
+			Chunk = new Vector2Int(x, y),
 		};
 
 		if (hexType == HexType.Yellow || hexType == HexType.Green)
         {
-			Debug.Log(string.Format("Chunk [{0}] [{1}]", x, y));
-			Debug.Log("Hex type: " + hexType.ToString());
-			hexDetailsPanel.SetActive(!hexDetailsPanel.activeInHierarchy);
+			// New hex cell clicked
+			if (displayHexDetails.HexDetails == null || displayHexDetails.HexDetails.GlobalIndex != hexDetails.GlobalIndex)
+            {
+				displayHexDetails.HexDetails = hexDetails;
+				hexDetailsPanel.SetActive(true);
+			}
+			else
+            {
+				hexDetailsPanel.SetActive(!hexDetailsPanel.activeInHierarchy);
+			}
 		}
+		else if (hexDetailsPanel.activeInHierarchy)
+        {
+			hexDetailsPanel.SetActive(false);
+        }
 	}
 
     private Vector2Int FromPosition(Vector3 position)
@@ -102,4 +119,19 @@ public class CellClick : MonoBehaviour
 
 		return new Vector2Int(iX, iZ);
 	}
+
+	private Vector2 GetWorldPosition(int chunkColumn, int chunkRow)
+    {
+		// TODO: Remove duplicate code
+		bool isRowEven = (chunkRow % 2 == 0) ? true : false;
+		float offset = 0f;
+		if (!isRowEven)
+		{
+			offset = ChunkPool.Instance.HexSharedInfo.HexSize.x / 2f;
+		}
+
+		return new Vector2(
+			offset + (chunkColumn * ChunkPool.Instance.HexSharedInfo.HexSize.x),
+			chunkRow * (ChunkPool.Instance.HexSharedInfo.HexSize.y - ChunkPool.Instance.HexSharedInfo.HeightAdjustment));
+    }
 }
