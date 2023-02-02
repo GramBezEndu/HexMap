@@ -10,6 +10,8 @@ public class ChunkData
 
     public MeshRenderer MeshRenderer { get; private set; }
 
+    public MeshCollider MeshCollider { get; private set; }
+
     public HexInfo[] Hexes { get; private set; }
 
     public ChunkData()
@@ -17,6 +19,7 @@ public class ChunkData
         ChunkGO = new GameObject("Unused");
         MeshFilter = ChunkGO.AddComponent<MeshFilter>();
         MeshRenderer = ChunkGO.AddComponent<MeshRenderer>();
+        MeshCollider = ChunkGO.AddComponent<MeshCollider>();
         MeshRenderer.material = ChunkPool.Instance.SharedMaterial;
         MeshRenderer.material.mainTexture = ChunkPool.Instance.Texture;
         ChunkGO.SetActive(false);
@@ -31,7 +34,7 @@ public class ChunkData
             int column = i % chunkLength;
             bool isRowEven = (row % 2 == 0) ? true : false;
             float offset = 0f;
-            if (isRowEven)
+            if (!isRowEven)
             {
                 offset = ChunkPool.Instance.HexSharedInfo.HexSize.x / 2f;
             }

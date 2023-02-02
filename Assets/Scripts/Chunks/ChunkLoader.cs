@@ -38,6 +38,7 @@ public class ChunkLoader
         }
 
         meshFilter.mesh.CombineMeshes(combineInstances);
+        chunkData.MeshCollider.sharedMesh = meshFilter.mesh;
         meshFilter.mesh.RecalculateNormals();
     }
 
