@@ -16,32 +16,32 @@ public class ChunkManager : MonoBehaviour
 
     private List<ChunkInfo> loadedChunks = new List<ChunkInfo>();
 
-    private int currentX;
+    private int currentChunkX;
 
-    private int currentY;
+    private int currentChunkY;
 
-    public int CurrentX
+    public int CurrentChunkX
     {
-        get => currentX;
+        get => currentChunkX;
         private set
         {
-            if (value != currentX)
+            if (value != currentChunkX)
             {
-                currentX = value;
+                currentChunkX = value;
                 LoadChunksAroundCamera();
                 UnloadChunks();
             }
         }
     }
 
-    public int CurrentY
+    public int CurrentChunkY
     {
-        get => currentY;
+        get => currentChunkY;
         private set
         {
-            if (value != currentY)
+            if (value != currentChunkY)
             {
-                currentY = value;
+                currentChunkY = value;
                 LoadChunksAroundCamera();
                 UnloadChunks();
             }
@@ -50,16 +50,16 @@ public class ChunkManager : MonoBehaviour
 
     private void Start()
     {
-        CurrentX = (int)(camera.transform.position.x / ChunkPool.Instance.HexSharedInfo.ChunkSize.x);
-        CurrentY = (int)(camera.transform.position.y / ChunkPool.Instance.HexSharedInfo.ChunkSize.y);
+        CurrentChunkX = (int)(camera.transform.position.x / ChunkPool.Instance.HexSharedInfo.ChunkSize.x);
+        CurrentChunkY = (int)(camera.transform.position.y / ChunkPool.Instance.HexSharedInfo.ChunkSize.y);
 
         LoadChunksAroundCamera();
     }
 
     private void Update()
     {
-        CurrentX = (int)(camera.transform.position.x / ChunkPool.Instance.HexSharedInfo.ChunkSize.x);
-        CurrentY = (int)(camera.transform.position.y / ChunkPool.Instance.HexSharedInfo.ChunkSize.y);
+        CurrentChunkX = (int)(camera.transform.position.x / ChunkPool.Instance.HexSharedInfo.ChunkSize.x);
+        CurrentChunkY = (int)(camera.transform.position.y / ChunkPool.Instance.HexSharedInfo.ChunkSize.y);
     }
 
     private void UnloadChunks()
@@ -67,7 +67,7 @@ public class ChunkManager : MonoBehaviour
         int unloadDistance = renderDistance + 1;
         foreach (ChunkInfo chunk in loadedChunks.ToArray())
         {
-            if (Math.Abs(currentX - chunk.Column) >= unloadDistance || Math.Abs(currentY - chunk.Row) >= unloadDistance)
+            if (Math.Abs(currentChunkX - chunk.Column) >= unloadDistance || Math.Abs(currentChunkY - chunk.Row) >= unloadDistance)
             {
                 chunkLoader.UnloadChunk(chunk);
                 loadedChunks.Remove(chunk);
@@ -77,10 +77,10 @@ public class ChunkManager : MonoBehaviour
 
     private void LoadChunksAroundCamera()
     {
-        int minX = Math.Max(0, CurrentX - renderDistance);
-        int maxX = Math.Min(WorldSettings.ChunksInRow, CurrentX + renderDistance);
-        int minY = Math.Max(0, CurrentY - renderDistance);
-        int maxY = Math.Min(WorldSettings.ChunksInRow, CurrentY + renderDistance);
+        int minX = Math.Max(0, CurrentChunkX - renderDistance);
+        int maxX = Math.Min(WorldSettings.ChunksInRow, CurrentChunkX + renderDistance);
+        int minY = Math.Max(0, CurrentChunkY - renderDistance);
+        int maxY = Math.Min(WorldSettings.ChunksInRow, CurrentChunkY + renderDistance);
 
         for (int i = minX; i < maxX; i++)
         {

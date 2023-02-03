@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 
+[RequireComponent(typeof(TextMeshProUGUI))]
 public class FpsCounter : MonoBehaviour
 {
     private TextMeshProUGUI fps;

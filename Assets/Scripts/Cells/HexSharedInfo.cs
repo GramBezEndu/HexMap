@@ -12,21 +12,21 @@ public class HexSharedInfo
 
     public HexSharedInfo()
     {
-        CreateSharedMesh();
+        SharedMesh = CreateSharedMesh();
         GameObject hexHelperGO = new GameObject("Temp Hex");
         MeshFilter tempFilter = hexHelperGO.AddComponent<MeshFilter>();
         tempFilter.mesh = SharedMesh;
         hexHelperGO.AddComponent<MeshRenderer>();
         MeshCollider collider = hexHelperGO.AddComponent<MeshCollider>();
         HexSize = collider.bounds.size;
-        HeightAdjustment = (HexSize.y - HexSize.y / 2f) / 2f;
+        HeightAdjustment = (HexSize.y - (HexSize.y / 2f)) / 2f;
         ChunkSize = new Vector2(HexSize.x * WorldSettings.ChunkLength, (HexSize.y - HeightAdjustment) * WorldSettings.ChunkLength);
         Object.Destroy(hexHelperGO);
     }
 
-    private void CreateSharedMesh()
+    private Mesh CreateSharedMesh()
     {
-        var vertices = new Vector3[]
+        Vector3[] vertices = new Vector3[]
         {
             new Vector3(-1f , -.5f),
             new Vector3(-1f, .5f),
@@ -36,7 +36,7 @@ public class HexSharedInfo
             new Vector3(0f, -1f)
         };
 
-        var triangles = new int[]
+        int[] triangles = new int[]
         {
             1, 5, 0,
             1, 4, 5,
@@ -44,7 +44,7 @@ public class HexSharedInfo
             2, 3, 4
         };
 
-        var uv = new Vector2[]
+        Vector2[] uv = new Vector2[]
         {
             new Vector2(0, 0.25f),
             new Vector2(0, 0.75f),
@@ -54,9 +54,13 @@ public class HexSharedInfo
             new Vector2(0.5f, 0),
         };
 
-        SharedMesh = new Mesh();
-        SharedMesh.vertices = vertices;
-        SharedMesh.triangles = triangles;
-        SharedMesh.uv = uv;
+        Mesh mesh = new Mesh()
+        {
+            vertices = vertices,
+            triangles = triangles,
+            uv = uv
+        };
+
+        return mesh;
     }
 }

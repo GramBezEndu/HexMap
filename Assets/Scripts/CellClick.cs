@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Camera))]
 public class CellClick : MonoBehaviour
 {
 	[SerializeField]
@@ -39,12 +40,12 @@ public class CellClick : MonoBehaviour
 		}
 	}
 
-	private void TouchCell(Vector3 position)
+	private void TouchCell(Vector3 worldPosition)
 	{
-		Vector2Int coordinates = FromPosition(position);
+		Vector2Int coordinates = GetHexPosition(worldPosition);
 
 		int hexGlobalIndex = 
-			coordinates.x + coordinates.y * WorldSettings.ChunksInRow * WorldSettings.ChunkLength + coordinates.y / 2;
+			coordinates.x + (coordinates.y * WorldSettings.ChunksInRow * WorldSettings.ChunkLength) + (coordinates.y / 2);
 
 		int chunkColumn = hexGlobalIndex % (WorldSettings.ChunksInRow * WorldSettings.ChunkLength);
 		int chunkRow = hexGlobalIndex / (WorldSettings.ChunksInRow * WorldSettings.ChunkLength);
@@ -52,11 +53,9 @@ public class CellClick : MonoBehaviour
 		int localColumn = hexGlobalIndex % WorldSettings.ChunkLength;
 		int localRow = (hexGlobalIndex / (WorldSettings.ChunksInRow * WorldSettings.ChunkLength)) % WorldSettings.ChunkLength;
 
-		// Global hex cell X, Y
-		int x = chunkColumn / WorldSettings.ChunkLength;
-		int y = chunkRow / WorldSettings.ChunkLength;
+		Vector2Int chunk = new Vector2Int(chunkColumn / WorldSettings.ChunkLength, chunkRow / WorldSettings.ChunkLength);
 
-		ChunkInfo chunkInfo = mapGenerator.Chunks[x, y];
+		ChunkInfo chunkInfo = mapGenerator.Chunks[chunk.x, chunk.y];
 		CellType hexType = chunkInfo.HexType[localRow * WorldSettings.ChunkLength + localColumn];
 		HexDetails hexDetails = new HexDetails()
 		{
@@ -64,7 +63,7 @@ public class CellClick : MonoBehaviour
 			HexType = hexType,
 			WorldPosition = GetWorldPosition(chunkColumn, chunkRow),
 			ChunkCell = new Vector2Int(localColumn, localRow),
-			Chunk = new Vector2Int(x, y),
+			Chunk = chunk,
 		};
 
 		if (hexType == CellType.Yellow || hexType == CellType.Green)
@@ -92,7 +91,7 @@ public class CellClick : MonoBehaviour
 		}
 	}
 
-    private Vector2Int FromPosition(Vector3 worldPosition)
+    private Vector2Int GetHexPosition(Vector3 worldPosition)
     {
 		float x = worldPosition.x / ChunkPool.Instance.HexSharedInfo.HexSize.x;
 		float y = -x;

@@ -7,7 +7,7 @@ public class ChunkLoader
         ChunkData chunkData = ChunkPool.Instance.GetChunk();
         GameObject chunkGO = chunkData.ChunkGO;
         chunkGO.SetActive(true);
-        chunkGO.name = string.Format("[{0} {1}] Chunk", chunkInfo.Column, chunkInfo.Row);
+        chunkGO.name = GetChunkName(chunkInfo);
         MeshFilter meshFilter = chunkData.MeshFilter;
 
         int chunkLength = WorldSettings.ChunkLength;
@@ -20,7 +20,7 @@ public class ChunkLoader
 
     public void UnloadChunk(ChunkInfo chunkInfo)
     {
-        GameObject chunk = GameObject.Find(string.Format("[{0} {1}] Chunk", chunkInfo.Column, chunkInfo.Row));
+        GameObject chunk = GameObject.Find(GetChunkName(chunkInfo));
         chunk.SetActive(false);
         chunk.name = "Unused";
     }
@@ -55,5 +55,10 @@ public class ChunkLoader
         chunkGO.transform.position = new Vector2(
             chunkInfo.Column * ChunkPool.Instance.HexSharedInfo.ChunkSize.x,
             chunkInfo.Row * ChunkPool.Instance.HexSharedInfo.ChunkSize.y);
+    }
+
+    private string GetChunkName(ChunkInfo chunkInfo)
+    {
+        return string.Format("[{0} {1}] Chunk", chunkInfo.Column, chunkInfo.Row);
     }
 }
