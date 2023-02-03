@@ -44,20 +44,20 @@ public class CellClick : MonoBehaviour
 		Vector2Int coordinates = FromPosition(position);
 
 		int hexGlobalIndex = 
-			coordinates.x + coordinates.y * mapGenerator.ChunksInRow * HexSharedInfo.ChunkLength + coordinates.y / 2;
+			coordinates.x + coordinates.y * WorldSettings.ChunksInRow * WorldSettings.ChunkLength + coordinates.y / 2;
 
-		int chunkColumn = hexGlobalIndex % (mapGenerator.ChunksInRow * HexSharedInfo.ChunkLength);
-		int chunkRow = hexGlobalIndex / (mapGenerator.ChunksInRow * HexSharedInfo.ChunkLength);
+		int chunkColumn = hexGlobalIndex % (WorldSettings.ChunksInRow * WorldSettings.ChunkLength);
+		int chunkRow = hexGlobalIndex / (WorldSettings.ChunksInRow * WorldSettings.ChunkLength);
 
-		int localColumn = hexGlobalIndex % HexSharedInfo.ChunkLength;
-		int localRow = (hexGlobalIndex / (mapGenerator.ChunksInRow * HexSharedInfo.ChunkLength)) % HexSharedInfo.ChunkLength;
+		int localColumn = hexGlobalIndex % WorldSettings.ChunkLength;
+		int localRow = (hexGlobalIndex / (WorldSettings.ChunksInRow * WorldSettings.ChunkLength)) % WorldSettings.ChunkLength;
 
 		// Global hex cell X, Y
-		int x = chunkColumn / HexSharedInfo.ChunkLength;
-		int y = chunkRow / HexSharedInfo.ChunkLength;
+		int x = chunkColumn / WorldSettings.ChunkLength;
+		int y = chunkRow / WorldSettings.ChunkLength;
 
 		ChunkInfo chunkInfo = mapGenerator.Chunks[x, y];
-		HexType hexType = chunkInfo.HexType[localRow * HexSharedInfo.ChunkLength + localColumn];
+		CellType hexType = chunkInfo.HexType[localRow * WorldSettings.ChunkLength + localColumn];
 		HexDetails hexDetails = new HexDetails()
 		{
 			GlobalIndex = hexGlobalIndex,
@@ -67,7 +67,7 @@ public class CellClick : MonoBehaviour
 			Chunk = new Vector2Int(x, y),
 		};
 
-		if (hexType == HexType.Yellow || hexType == HexType.Green)
+		if (hexType == CellType.Yellow || hexType == CellType.Green)
         {
 			// New hex cell clicked
 			if (displayHexDetails.HexDetails == null || displayHexDetails.HexDetails.GlobalIndex != hexDetails.GlobalIndex)

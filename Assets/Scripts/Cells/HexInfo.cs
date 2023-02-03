@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class HexInfo
 {
-    private HexType hexType = HexType.Blue;
+    private CellType hexType = CellType.Blue;
 
     public Mesh Mesh { get; private set; }
 
     public Vector3 LocalPosition { get; set; }
 
-    public HexType HexType 
+    public CellType HexType 
     {
         get => hexType;
         set
@@ -46,15 +46,15 @@ public class HexInfo
         Mesh.colors = colors.ToArray();
     }
 
-    private Color GetColor(HexType type)
+    private Color GetColor(CellType type)
     {
         switch (type)
         {
-            case HexType.Blue:
+            case CellType.Blue:
                 return Color.blue;
-            case HexType.Green:
+            case CellType.Green:
                 return Color.green;
-            case HexType.Yellow:
+            case CellType.Yellow:
                 return Color.yellow;
             default:
                 return Color.gray;

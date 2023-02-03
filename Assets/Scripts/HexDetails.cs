@@ -4,7 +4,7 @@ public class HexDetails
 {
     public int GlobalIndex { get; set; }
 
-    public HexType HexType { get; set; }
+    public CellType HexType { get; set; }
 
     public Vector2 WorldPosition { get; set; }
 

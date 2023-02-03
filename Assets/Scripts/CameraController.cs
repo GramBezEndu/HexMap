@@ -6,9 +6,6 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private float speed = 100f;
 
-    [SerializeField]
-    private MapGenerator mapGenerator;
-
     private Vector3 dragOrigin;
 
     private Rect mapBounds;
@@ -27,9 +24,9 @@ public class CameraController : MonoBehaviour
     private void Start()
     {
         float offset = 5f;
-        float width = HexSharedInfo.ChunkLength * ChunkPool.Instance.HexSharedInfo.HexSize.x * mapGenerator.ChunksInRow;
+        float width = WorldSettings.ChunkLength * ChunkPool.Instance.HexSharedInfo.HexSize.x * WorldSettings.ChunksInRow;
         float height = 
-            HexSharedInfo.ChunkLength * (ChunkPool.Instance.HexSharedInfo.HexSize.y - ChunkPool.Instance.HexSharedInfo.HeightAdjustment) * mapGenerator.ChunksInRow;
+            WorldSettings.ChunkLength * (ChunkPool.Instance.HexSharedInfo.HexSize.y - ChunkPool.Instance.HexSharedInfo.HeightAdjustment) * WorldSettings.ChunksInRow;
         
         mapBounds = new Rect(
             -offset,

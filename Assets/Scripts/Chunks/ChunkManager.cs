@@ -78,9 +78,9 @@ public class ChunkManager : MonoBehaviour
     private void LoadChunksAroundCamera()
     {
         int minX = Math.Max(0, CurrentX - renderDistance);
-        int maxX = Math.Min(mapGenerator.ChunksInRow, CurrentX + renderDistance);
+        int maxX = Math.Min(WorldSettings.ChunksInRow, CurrentX + renderDistance);
         int minY = Math.Max(0, CurrentY - renderDistance);
-        int maxY = Math.Min(mapGenerator.ChunksInRow, CurrentY + renderDistance);
+        int maxY = Math.Min(WorldSettings.ChunksInRow, CurrentY + renderDistance);
 
         for (int i = minX; i < maxX; i++)
         {

@@ -10,7 +10,7 @@ public class ChunkLoader
         chunkGO.name = string.Format("[{0} {1}] Chunk", chunkInfo.Column, chunkInfo.Row);
         MeshFilter meshFilter = chunkData.MeshFilter;
 
-        int chunkLength = HexSharedInfo.ChunkLength;
+        int chunkLength = WorldSettings.ChunkLength;
         int cellCount = chunkLength * chunkLength;
 
         SetHexColors(chunkInfo, chunkData);

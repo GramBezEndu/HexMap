@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class HexSharedInfo
 {
-    public const int ChunkLength = 20;
-
     public Mesh SharedMesh { get; private set; }
 
     public Vector2 HexSize { get; private set; }
@@ -22,7 +20,7 @@ public class HexSharedInfo
         MeshCollider collider = hexHelperGO.AddComponent<MeshCollider>();
         HexSize = collider.bounds.size;
         HeightAdjustment = (HexSize.y - HexSize.y / 2f) / 2f;
-        ChunkSize = new Vector2(HexSize.x * ChunkLength, (HexSize.y - HeightAdjustment) * ChunkLength);
+        ChunkSize = new Vector2(HexSize.x * WorldSettings.ChunkLength, (HexSize.y - HeightAdjustment) * WorldSettings.ChunkLength);
         Object.Destroy(hexHelperGO);
     }
 

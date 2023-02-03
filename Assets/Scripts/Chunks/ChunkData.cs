@@ -22,7 +22,7 @@ public class ChunkData
         MeshRenderer.material.mainTexture = ChunkPool.Instance.Texture;
         ChunkGO.SetActive(false);
 
-        int chunkLength = HexSharedInfo.ChunkLength;
+        int chunkLength = WorldSettings.ChunkLength;
         int cellCount = chunkLength * chunkLength;
         Hexes = new HexInfo[cellCount];
 
@@ -39,7 +39,7 @@ public class ChunkData
 
     private Vector3 GetHexPosition(int index)
     {
-        int chunkLength = HexSharedInfo.ChunkLength;
+        int chunkLength = WorldSettings.ChunkLength;
         int row = index / chunkLength;
         int column = index % chunkLength;
         bool isRowEven = (row % 2 == 0) ? true : false;
