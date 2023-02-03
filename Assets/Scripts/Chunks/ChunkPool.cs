@@ -13,8 +13,6 @@ public class ChunkPool : MonoBehaviour
     [SerializeField]
     private Material sharedMaterial;
 
-    private GameObject chunkPool;
-
     private ChunkData[] chunks;
 
     public static ChunkPool Instance => instance;
@@ -30,11 +28,10 @@ public class ChunkPool : MonoBehaviour
         instance = this;
         HexSharedInfo = new HexSharedInfo();
         chunks = new ChunkData[chunkCount];
-        chunkPool = new GameObject("Chunk Pool");
         for (int i = 0; i < chunkCount; i++)
         {
             chunks[i] = new ChunkData();
-            chunks[i].ChunkGO.transform.parent = chunkPool.transform;
+            chunks[i].ChunkGO.transform.parent = transform.gameObject.transform;
         }
     }
 

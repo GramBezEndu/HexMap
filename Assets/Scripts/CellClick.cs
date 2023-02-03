@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CellClick : MonoBehaviour
@@ -35,11 +32,9 @@ public class CellClick : MonoBehaviour
 	private void HandleInput()
 	{
 		Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-		RaycastHit hit;
-		if (Physics.Raycast(inputRay, out hit))
+		if (Physics.Raycast(inputRay))
 		{
             Vector3 worldPosition = camera.ScreenToWorldPoint(Input.mousePosition);
-			GameObject chunk = hit.collider.gameObject;
 			TouchCell(worldPosition);
 		}
 	}
@@ -97,12 +92,12 @@ public class CellClick : MonoBehaviour
 		}
 	}
 
-    private Vector2Int FromPosition(Vector3 position)
+    private Vector2Int FromPosition(Vector3 worldPosition)
     {
-		float x = position.x / ChunkPool.Instance.HexSharedInfo.HexSize.x;
+		float x = worldPosition.x / ChunkPool.Instance.HexSharedInfo.HexSize.x;
 		float y = -x;
 
-		float offset = position.y / (ChunkPool.Instance.HexSharedInfo.HexSize.y / 2f * 3f);
+		float offset = worldPosition.y / (ChunkPool.Instance.HexSharedInfo.HexSize.y / 2f * 3f);
 		x -= offset;
 		y -= offset;
 

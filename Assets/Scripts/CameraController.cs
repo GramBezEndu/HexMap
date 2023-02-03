@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
@@ -9,11 +7,9 @@ public class CameraController : MonoBehaviour
     private float speed = 100f;
 
     [SerializeField]
-    MapGenerator mapGenerator;
+    private MapGenerator mapGenerator;
 
     private Vector3 dragOrigin;
-
-    private new Camera camera;
 
     private Rect mapBounds;
 
@@ -21,7 +17,7 @@ public class CameraController : MonoBehaviour
 
     private void Awake()
     {
-        camera = GetComponent<Camera>();
+        Camera camera = GetComponent<Camera>();
         float cameraHeight = camera.orthographicSize * 2f;
         cameraSize = new Vector2(
             cameraHeight * ((float)Screen.width / Screen.height),
@@ -34,6 +30,7 @@ public class CameraController : MonoBehaviour
         float width = HexSharedInfo.ChunkLength * ChunkPool.Instance.HexSharedInfo.HexSize.x * mapGenerator.ChunksInRow;
         float height = 
             HexSharedInfo.ChunkLength * (ChunkPool.Instance.HexSharedInfo.HexSize.y - ChunkPool.Instance.HexSharedInfo.HeightAdjustment) * mapGenerator.ChunksInRow;
+        
         mapBounds = new Rect(
             -offset,
             -offset,

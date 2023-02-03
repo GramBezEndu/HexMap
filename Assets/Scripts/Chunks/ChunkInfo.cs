@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class ChunkInfo
 {
     public HexType[] HexType { get; private set; }
