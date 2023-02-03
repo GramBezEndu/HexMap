@@ -11,6 +11,9 @@ public class CellClick : MonoBehaviour
 	[SerializeField]
 	private GameObject hexDetailsPanel;
 
+	[SerializeField]
+	private GameObject hexHighlight;
+
 	private DisplayHexDetails displayHexDetails;
 
 	private new Camera camera;
@@ -74,18 +77,24 @@ public class CellClick : MonoBehaviour
 			// New hex cell clicked
 			if (displayHexDetails.HexDetails == null || displayHexDetails.HexDetails.GlobalIndex != hexDetails.GlobalIndex)
             {
+				// Hex details
 				displayHexDetails.HexDetails = hexDetails;
 				hexDetailsPanel.SetActive(true);
+				// Highlight
+				hexHighlight.SetActive(true);
+				hexHighlight.transform.position = hexDetails.WorldPosition;
 			}
 			else
             {
 				hexDetailsPanel.SetActive(!hexDetailsPanel.activeInHierarchy);
+				hexHighlight.SetActive(!hexHighlight.activeInHierarchy);
 			}
 		}
 		else if (hexDetailsPanel.activeInHierarchy)
         {
 			hexDetailsPanel.SetActive(false);
-        }
+			hexHighlight.SetActive(false);
+		}
 	}
 
     private Vector2Int FromPosition(Vector3 position)
