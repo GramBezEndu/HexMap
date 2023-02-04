@@ -52,13 +52,13 @@ public class CellClick : MonoBehaviour
 		int hexGlobalIndex = 
 			coordinates.x + (coordinates.y * WorldSettings.ChunksInRow * WorldSettings.ChunkLength) + (coordinates.y / 2);
 
-		int chunkColumn = hexGlobalIndex % (WorldSettings.ChunksInRow * WorldSettings.ChunkLength);
-		int chunkRow = hexGlobalIndex / (WorldSettings.ChunksInRow * WorldSettings.ChunkLength);
+		int hexColumn = hexGlobalIndex % (WorldSettings.ChunksInRow * WorldSettings.ChunkLength);
+		int hexRow = hexGlobalIndex / (WorldSettings.ChunksInRow * WorldSettings.ChunkLength);
 
 		int localColumn = hexGlobalIndex % WorldSettings.ChunkLength;
 		int localRow = (hexGlobalIndex / (WorldSettings.ChunksInRow * WorldSettings.ChunkLength)) % WorldSettings.ChunkLength;
 
-		Vector2Int chunk = new Vector2Int(chunkColumn / WorldSettings.ChunkLength, chunkRow / WorldSettings.ChunkLength);
+		Vector2Int chunk = new Vector2Int(hexColumn / WorldSettings.ChunkLength, hexRow / WorldSettings.ChunkLength);
 
 		ChunkInfo chunkInfo = mapGenerator.Chunks[chunk.x, chunk.y];
 		CellType hexType = chunkInfo.HexType[localRow * WorldSettings.ChunkLength + localColumn];
@@ -66,7 +66,7 @@ public class CellClick : MonoBehaviour
 		{
 			GlobalIndex = hexGlobalIndex,
 			HexType = hexType,
-			WorldPosition = GetWorldPosition(chunkColumn, chunkRow),
+			WorldPosition = ChunkData.GetHexPosition(hexColumn, hexRow),
 			ChunkCell = new Vector2Int(localColumn, localRow),
 			Chunk = chunk,
 		};
@@ -129,19 +129,4 @@ public class CellClick : MonoBehaviour
 
 		return new Vector2Int(iX, iZ);
 	}
-
-	private Vector2 GetWorldPosition(int chunkColumn, int chunkRow)
-    {
-		// TODO: Remove duplicate code
-		bool isRowEven = (chunkRow % 2 == 0) ? true : false;
-		float offset = 0f;
-		if (!isRowEven)
-		{
-			offset = HexSharedInfo.Instance.HexSize.x / 2f;
-		}
-
-		return new Vector2(
-			offset + (chunkColumn * HexSharedInfo.Instance.HexSize.x),
-			chunkRow * HexSharedInfo.Instance.RowHeight);
-    }
 }

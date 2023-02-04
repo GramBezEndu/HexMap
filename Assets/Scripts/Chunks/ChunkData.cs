@@ -37,21 +37,26 @@ public class ChunkData
         }
     }
 
-    private Vector3 GetHexPosition(int index)
+    public static Vector3 GetHexPosition(int index)
     {
         int chunkLength = WorldSettings.ChunkLength;
         int row = index / chunkLength;
         int column = index % chunkLength;
-        bool isRowEven = (row % 2 == 0) ? true : false;
+        return GetHexPosition(column, row);
+    }
+
+    public static Vector3 GetHexPosition(int hexColumn, int hexRow)
+    {
+        bool isRowEven = (hexRow % 2 == 0) ? true : false;
         float offset = 0f;
         if (!isRowEven)
         {
             offset = HexSharedInfo.Instance.HexSize.x / 2f;
         }
-        
+
         return new Vector3(
-                    offset + HexSharedInfo.Instance.HexSize.x * column,
-                    HexSharedInfo.Instance.RowHeight * row,
+                    offset + HexSharedInfo.Instance.HexSize.x * hexColumn,
+                    HexSharedInfo.Instance.RowHeight * hexRow,
                     0f);
     }
 }
