@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ChunkData
+public class Chunk
 {
     public GameObject ChunkGO { get; private set; }
 
@@ -12,7 +12,7 @@ public class ChunkData
 
     public HexInfo[] Hexes { get; private set; }
 
-    public ChunkData()
+    public Chunk()
     {
         ChunkGO = new GameObject("Unused");
         MeshFilter = ChunkGO.AddComponent<MeshFilter>();

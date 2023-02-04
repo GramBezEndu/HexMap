@@ -66,7 +66,7 @@ public class CellClick : MonoBehaviour
 		{
 			GlobalIndex = hexGlobalIndex,
 			HexType = hexType,
-			WorldPosition = ChunkData.GetHexPosition(hexColumn, hexRow),
+			WorldPosition = Chunk.GetHexPosition(hexColumn, hexRow),
 			ChunkCell = new Vector2Int(localColumn, localRow),
 			Chunk = chunk,
 		};

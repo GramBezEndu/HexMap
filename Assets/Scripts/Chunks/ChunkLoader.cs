@@ -4,7 +4,7 @@ public class ChunkLoader
 {
     public void LoadChunk(ChunkInfo chunkInfo)
     {
-        ChunkData chunkData = ChunkPool.Instance.GetChunk();
+        Chunk chunkData = ChunkPool.Instance.GetChunk();
         GameObject chunkGO = chunkData.ChunkGO;
         chunkGO.SetActive(true);
         chunkGO.name = GetChunkName(chunkInfo);
@@ -25,7 +25,7 @@ public class ChunkLoader
         chunk.name = "Unused";
     }
 
-    private void CombineMeshes(ChunkData chunkData, MeshFilter meshFilter, int cellCount)
+    private void CombineMeshes(Chunk chunkData, MeshFilter meshFilter, int cellCount)
     {
         CombineInstance[] combineInstances = new CombineInstance[cellCount];
         for (int i = 0; i < cellCount; i++)
@@ -42,7 +42,7 @@ public class ChunkLoader
         meshFilter.mesh.RecalculateNormals();
     }
 
-    private void SetHexColors(ChunkInfo chunkInfo, ChunkData chunkData)
+    private void SetHexColors(ChunkInfo chunkInfo, Chunk chunkData)
     {
         for (int i = 0; i < chunkInfo.HexType.Length; i++)
         {
