@@ -4,14 +4,6 @@ using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
-    private readonly int blueChance = 60;
-
-    private readonly int greyChance = 25;
-
-    private readonly int greenChance = 10;
-
-    private readonly int yellowChance = 5;
-
     private List<CellType> hexTypes = new List<CellType>();
 
     public ChunkInfo[,] Chunks { get; private set; }
@@ -19,21 +11,39 @@ public class MapGenerator : MonoBehaviour
     private void Awake()
     {
         int chunksInRow = WorldSettings.ChunksInRow;
+        AddCells(hexTypes);
+        hexTypes = Shuffle(hexTypes);
+        CreateChunks(chunksInRow);
+    }
+
+    private void AddCells(List<CellType> hexTypes)
+    {
+        int chunksInRow = WorldSettings.ChunksInRow;
         int chunkLength = WorldSettings.ChunkLength;
         int hexCount = chunksInRow * chunksInRow * chunkLength * chunkLength;
-        // Add all hexes
-        hexTypes.AddRange(Enumerable.Repeat(CellType.Blue, (int)(blueChance * hexCount / 100f)));
-        hexTypes.AddRange(Enumerable.Repeat(CellType.Gray, (int)(greyChance * hexCount / 100f)));
-        hexTypes.AddRange(Enumerable.Repeat(CellType.Green, (int)(greenChance * hexCount / 100f)));
-        hexTypes.AddRange(Enumerable.Repeat(CellType.Yellow, (int)(yellowChance * hexCount / 100f)));
+        int combinedChance = WorldSettings.CellChances.Values.Sum();
+        foreach (KeyValuePair<CellType, int> cellChance in WorldSettings.CellChances)
+        {
+            hexTypes.AddRange(Enumerable.Repeat(cellChance.Key, (int)(cellChance.Value * hexCount / combinedChance)));
+        }
 
-        // Shuffle
+        if (hexTypes.Count != hexCount)
+        {
+            int difference = hexCount - hexTypes.Count;
+            Debug.Log(string.Format("Adding {0} blue cells to fill up chunks", difference));
+            hexTypes.AddRange(Enumerable.Repeat(CellType.Blue, difference));
+        }
+    }
+
+    private List<CellType> Shuffle(List<CellType> hexTypes)
+    {
         System.Random rng = new System.Random();
-        hexTypes = hexTypes.OrderBy(x => rng.Next()).ToList();
+        return hexTypes.OrderBy(x => rng.Next()).ToList();
+    }
 
-        // Create chunks
+    private void CreateChunks(int chunksInRow)
+    {
         Chunks = new ChunkInfo[chunksInRow, chunksInRow];
-
         List<List<CellType>> chunks = hexTypes.Chunk(WorldSettings.ChunkLength * WorldSettings.ChunkLength).ToList();
         for (int i = 0; i < chunks.Count(); i++)
         {
