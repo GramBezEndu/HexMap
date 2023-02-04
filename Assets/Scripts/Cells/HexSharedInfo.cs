@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class HexSharedInfo
 {
+    private static HexSharedInfo instance;
+
+    public static HexSharedInfo Instance => instance;
+
     public Mesh SharedMesh { get; private set; }
 
     public Vector2 HexSize { get; private set; }
@@ -12,6 +16,7 @@ public class HexSharedInfo
 
     public HexSharedInfo()
     {
+        instance = this;
         SharedMesh = CreateSharedMesh();
         GameObject hexHelperGO = new GameObject("Temp Hex");
         MeshFilter tempFilter = hexHelperGO.AddComponent<MeshFilter>();
@@ -28,11 +33,11 @@ public class HexSharedInfo
     {
         Vector3[] vertices = new Vector3[]
         {
-            new Vector3(-1f , -.5f),
-            new Vector3(-1f, .5f),
+            new Vector3(-1f, -0.5f),
+            new Vector3(-1f, 0.5f),
             new Vector3(0f, 1f),
-            new Vector3(1f, .5f),
-            new Vector3(1f, -.5f),
+            new Vector3(1f, 0.5f),
+            new Vector3(1f, -0.5f),
             new Vector3(0f, -1f)
         };
 

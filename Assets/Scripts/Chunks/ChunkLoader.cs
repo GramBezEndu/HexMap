@@ -53,8 +53,8 @@ public class ChunkLoader
     private void SetChunkPosition(ChunkInfo chunkInfo, GameObject chunkGO)
     {
         chunkGO.transform.position = new Vector2(
-            chunkInfo.Column * ChunkPool.Instance.HexSharedInfo.ChunkSize.x,
-            chunkInfo.Row * ChunkPool.Instance.HexSharedInfo.ChunkSize.y);
+            chunkInfo.Column * HexSharedInfo.Instance.ChunkSize.x,
+            chunkInfo.Row * HexSharedInfo.Instance.ChunkSize.y);
     }
 
     private string GetChunkName(ChunkInfo chunkInfo)

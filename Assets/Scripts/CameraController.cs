@@ -24,15 +24,17 @@ public class CameraController : MonoBehaviour
     private void Start()
     {
         float offset = 5f;
-        float width = WorldSettings.ChunkLength * ChunkPool.Instance.HexSharedInfo.HexSize.x * WorldSettings.ChunksInRow;
-        float height = 
-            WorldSettings.ChunkLength * (ChunkPool.Instance.HexSharedInfo.HexSize.y - ChunkPool.Instance.HexSharedInfo.HeightAdjustment) * WorldSettings.ChunksInRow;
+        float mapWidth = WorldSettings.ChunkLength * HexSharedInfo.Instance.HexSize.x * WorldSettings.ChunksInRow;
+        float mapHeight = 
+            WorldSettings.ChunkLength *
+            (HexSharedInfo.Instance.HexSize.y - HexSharedInfo.Instance.HeightAdjustment) *
+            WorldSettings.ChunksInRow;
         
         mapBounds = new Rect(
             -offset,
             -offset,
-            width + 2 * offset,
-            height + 2 * offset);
+            mapWidth + 2 * offset,
+            mapHeight + 2 * offset);
     }
 
     private void LateUpdate()

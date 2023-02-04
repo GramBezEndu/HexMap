@@ -27,10 +27,12 @@ public class HexInfo
 
     public void InitializeMesh()
     {
-        Mesh = new Mesh();
-        Mesh.vertices = ChunkPool.Instance.HexSharedInfo.SharedMesh.vertices;
-        Mesh.uv = ChunkPool.Instance.HexSharedInfo.SharedMesh.uv;
-        Mesh.triangles = ChunkPool.Instance.HexSharedInfo.SharedMesh.triangles;
+        Mesh = new Mesh
+        {
+            vertices = HexSharedInfo.Instance.SharedMesh.vertices,
+            uv = HexSharedInfo.Instance.SharedMesh.uv,
+            triangles = HexSharedInfo.Instance.SharedMesh.triangles
+        };
         UpdateMeshColor();
         Mesh.RecalculateNormals();
     }

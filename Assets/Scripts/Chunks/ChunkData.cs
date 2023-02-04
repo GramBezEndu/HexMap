@@ -46,12 +46,12 @@ public class ChunkData
         float offset = 0f;
         if (!isRowEven)
         {
-            offset = ChunkPool.Instance.HexSharedInfo.HexSize.x / 2f;
+            offset = HexSharedInfo.Instance.HexSize.x / 2f;
         }
         
         return new Vector3(
-                    offset + ChunkPool.Instance.HexSharedInfo.HexSize.x * column,
-                    (ChunkPool.Instance.HexSharedInfo.HexSize.y - ChunkPool.Instance.HexSharedInfo.HeightAdjustment) * row,
+                    offset + HexSharedInfo.Instance.HexSize.x * column,
+                    (HexSharedInfo.Instance.HexSize.y - HexSharedInfo.Instance.HeightAdjustment) * row,
                     0f);
     }
 }

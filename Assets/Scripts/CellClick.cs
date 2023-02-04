@@ -93,10 +93,10 @@ public class CellClick : MonoBehaviour
 
     private Vector2Int GetHexPosition(Vector3 worldPosition)
     {
-		float x = worldPosition.x / ChunkPool.Instance.HexSharedInfo.HexSize.x;
+		float x = worldPosition.x / HexSharedInfo.Instance.HexSize.x;
 		float y = -x;
 
-		float offset = worldPosition.y / (ChunkPool.Instance.HexSharedInfo.HexSize.y / 2f * 3f);
+		float offset = worldPosition.y / (HexSharedInfo.Instance.HexSize.y / 2f * 3f);
 		x -= offset;
 		y -= offset;
 
@@ -130,11 +130,11 @@ public class CellClick : MonoBehaviour
 		float offset = 0f;
 		if (!isRowEven)
 		{
-			offset = ChunkPool.Instance.HexSharedInfo.HexSize.x / 2f;
+			offset = HexSharedInfo.Instance.HexSize.x / 2f;
 		}
 
 		return new Vector2(
-			offset + (chunkColumn * ChunkPool.Instance.HexSharedInfo.HexSize.x),
-			chunkRow * (ChunkPool.Instance.HexSharedInfo.HexSize.y - ChunkPool.Instance.HexSharedInfo.HeightAdjustment));
+			offset + (chunkColumn * HexSharedInfo.Instance.HexSize.x),
+			chunkRow * (HexSharedInfo.Instance.HexSize.y - HexSharedInfo.Instance.HeightAdjustment));
     }
 }
