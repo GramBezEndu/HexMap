@@ -135,6 +135,6 @@ public class CellClick : MonoBehaviour
 
 		return new Vector2(
 			offset + (chunkColumn * HexSharedInfo.Instance.HexSize.x),
-			chunkRow * (HexSharedInfo.Instance.HexSize.y - HexSharedInfo.Instance.HeightAdjustment));
+			chunkRow * HexSharedInfo.Instance.RowHeight);
     }
 }

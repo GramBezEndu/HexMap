@@ -14,19 +14,27 @@ public class HexSharedInfo
 
     public float HeightAdjustment { get; private set; }
 
+    public float RowHeight => HexSize.y - HeightAdjustment;
+
     public HexSharedInfo()
     {
         instance = this;
         SharedMesh = CreateSharedMesh();
-        GameObject hexHelperGO = new GameObject("Temp Hex");
-        MeshFilter tempFilter = hexHelperGO.AddComponent<MeshFilter>();
-        tempFilter.mesh = SharedMesh;
-        hexHelperGO.AddComponent<MeshRenderer>();
-        MeshCollider collider = hexHelperGO.AddComponent<MeshCollider>();
+        GameObject tempHex = new GameObject("Temp Hex");
+        MeshCollider collider = SetupTemporaryHex(tempHex);
         HexSize = collider.bounds.size;
         HeightAdjustment = (HexSize.y - (HexSize.y / 2f)) / 2f;
-        ChunkSize = new Vector2(HexSize.x * WorldSettings.ChunkLength, (HexSize.y - HeightAdjustment) * WorldSettings.ChunkLength);
-        Object.Destroy(hexHelperGO);
+        ChunkSize = new Vector2(HexSize.x * WorldSettings.ChunkLength, RowHeight * WorldSettings.ChunkLength);
+        Object.Destroy(tempHex);
+    }
+
+    private MeshCollider SetupTemporaryHex(GameObject tempHex)
+    {
+        MeshFilter tempFilter = tempHex.AddComponent<MeshFilter>();
+        tempFilter.mesh = SharedMesh;
+        tempHex.AddComponent<MeshRenderer>();
+        MeshCollider collider = tempHex.AddComponent<MeshCollider>();
+        return collider;
     }
 
     private Mesh CreateSharedMesh()

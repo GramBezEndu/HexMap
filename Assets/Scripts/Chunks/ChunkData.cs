@@ -51,7 +51,7 @@ public class ChunkData
         
         return new Vector3(
                     offset + HexSharedInfo.Instance.HexSize.x * column,
-                    (HexSharedInfo.Instance.HexSize.y - HexSharedInfo.Instance.HeightAdjustment) * row,
+                    HexSharedInfo.Instance.RowHeight * row,
                     0f);
     }
 }

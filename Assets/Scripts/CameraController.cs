@@ -27,7 +27,7 @@ public class CameraController : MonoBehaviour
         float mapWidth = WorldSettings.ChunkLength * HexSharedInfo.Instance.HexSize.x * WorldSettings.ChunksInRow;
         float mapHeight = 
             WorldSettings.ChunkLength *
-            (HexSharedInfo.Instance.HexSize.y - HexSharedInfo.Instance.HeightAdjustment) *
+            HexSharedInfo.Instance.RowHeight *
             WorldSettings.ChunksInRow;
         
         mapBounds = new Rect(
