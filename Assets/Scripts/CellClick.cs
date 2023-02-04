@@ -24,9 +24,14 @@ public class CellClick : MonoBehaviour
 
     private void Update()
 	{
-		if (Input.GetMouseButtonDown(0))
+		if (LeftMouseButtonJustPressed())
 		{
 			HandleInput();
+		}
+
+		bool LeftMouseButtonJustPressed()
+		{
+			return Input.GetMouseButtonDown(0);
 		}
 	}
 
@@ -42,7 +47,7 @@ public class CellClick : MonoBehaviour
 
 	private void TouchCell(Vector3 worldPosition)
 	{
-		Vector2Int coordinates = GetHexPosition(worldPosition);
+		Vector2Int coordinates = GetHexCoordinates(worldPosition);
 
 		int hexGlobalIndex = 
 			coordinates.x + (coordinates.y * WorldSettings.ChunksInRow * WorldSettings.ChunkLength) + (coordinates.y / 2);
@@ -74,12 +79,14 @@ public class CellClick : MonoBehaviour
 				// Hex details
 				displayHexDetails.HexDetails = hexDetails;
 				hexDetailsPanel.SetActive(true);
+
 				// Highlight
 				hexHighlight.SetActive(true);
 				hexHighlight.transform.position = hexDetails.WorldPosition;
 			}
 			else
             {
+				// Toggle
 				hexDetailsPanel.SetActive(!hexDetailsPanel.activeInHierarchy);
 				hexHighlight.SetActive(!hexHighlight.activeInHierarchy);
 			}
@@ -91,7 +98,7 @@ public class CellClick : MonoBehaviour
 		}
 	}
 
-    private Vector2Int GetHexPosition(Vector3 worldPosition)
+    private Vector2Int GetHexCoordinates(Vector3 worldPosition)
     {
 		float x = worldPosition.x / HexSharedInfo.Instance.HexSize.x;
 		float y = -x;

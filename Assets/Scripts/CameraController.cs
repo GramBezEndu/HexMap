@@ -44,17 +44,27 @@ public class CameraController : MonoBehaviour
 
     private void CameraMovement()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (RightMouseButtonJustPressed())
         {
             dragOrigin = Input.mousePosition;
         }
-        else if (Input.GetMouseButton(1))
+        else if (RightMouseButtonHeldDown())
         {
             Vector3 position = Camera.main.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
             Vector3 movement = new Vector3(position.x, position.y, 0) * speed * Time.deltaTime;
             Vector3 newPosition = transform.position + movement;
             newPosition = ClampToMapBounds(newPosition);
             transform.position = newPosition;
+        }
+
+        bool RightMouseButtonHeldDown()
+        {
+            return Input.GetMouseButton(1);
+        }
+
+        bool RightMouseButtonJustPressed()
+        {
+            return Input.GetMouseButtonDown(1);
         }
     }
 
