@@ -73,33 +73,31 @@ public class CellClick : MonoBehaviour
 
 		if (hexType == CellType.Yellow || hexType == CellType.Green)
         {
-			// New hex cell clicked
-			if (displayHexDetails.HexDetails == null || displayHexDetails.HexDetails.GlobalIndex != hexDetails.GlobalIndex)
+            if (NewCellClicked(hexDetails))
             {
-				// Hex details
-				displayHexDetails.HexDetails = hexDetails;
-				hexDetailsPanel.SetActive(true);
-
-				// Highlight
-				hexHighlight.SetActive(true);
-				hexHighlight.transform.position = hexDetails.WorldPosition;
-			}
-			else
+                displayHexDetails.HexDetails = hexDetails;
+                hexHighlight.transform.position = hexDetails.WorldPosition;
+                SetUIActive(true);
+            }
+            else
             {
-				// Toggle
-				hexDetailsPanel.SetActive(!hexDetailsPanel.activeInHierarchy);
-				hexHighlight.SetActive(!hexHighlight.activeInHierarchy);
-			}
-		}
-		else if (hexDetailsPanel.activeInHierarchy)
+                ToggleUI();
+            }
+        }
+        else if (hexDetailsPanel.activeInHierarchy)
         {
-			hexDetailsPanel.SetActive(false);
-			hexHighlight.SetActive(false);
+			SetUIActive(false);
 		}
-	}
+
+        bool NewCellClicked(HexDetails hexDetails)
+        {
+            return displayHexDetails.HexDetails == null || displayHexDetails.HexDetails.GlobalIndex != hexDetails.GlobalIndex;
+        }
+    }
 
     private Vector2Int GetHexCoordinates(Vector3 worldPosition)
     {
+		// Code based on Hex Map tutorial (MIT-0 license) https://catlikecoding.com/unity/tutorials/hex-map/part-1/
 		float x = worldPosition.x / HexSharedInfo.Instance.HexSize.x;
 		float y = -x;
 
@@ -128,5 +126,16 @@ public class CellClick : MonoBehaviour
         }
 
 		return new Vector2Int(iX, iZ);
+	}
+
+	private void ToggleUI()
+    {
+		SetUIActive(!hexDetailsPanel.activeInHierarchy);
+	}
+
+	private void SetUIActive(bool active)
+	{
+		hexDetailsPanel.SetActive(active);
+		hexHighlight.SetActive(active);
 	}
 }
